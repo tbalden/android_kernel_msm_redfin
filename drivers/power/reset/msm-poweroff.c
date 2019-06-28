@@ -625,6 +625,8 @@ static void msm_restart_prepare(const char *cmd)
 		}
 	}
 
+	/* keep console-ramoops alive */
+	need_warm_reset = true;
 
 	/* Hard reset the PMIC unless memory contents must be maintained. */
 	if (force_warm_reboot || need_warm_reset)
