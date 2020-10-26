@@ -34,6 +34,10 @@
 #include <linux/crc8.h>
 #include <drm/drm_panel.h>
 
+#ifdef CONFIG_UCI
+#include <linux/uci/uci.h>
+#endif
+
 #define P9221_TX_TIMEOUT_MS		(20 * 1000)
 #define P9221_DCIN_TIMEOUT_MS		(1 * 1000)
 #define P9221_VRECT_TIMEOUT_MS		(2 * 1000)
@@ -4387,6 +4391,7 @@ static struct notifier_block screen_state_chg_cb = {
 	.notifier_call = p9221_screen_state_chg_cb,
 };
 
+
 #define SCREEN_NB_INIT_TIMES		10
 static void p9382_screen_nb_init_work(struct work_struct *work)
 {
@@ -4415,6 +4420,9 @@ retry:
 				goto retry;
 			}
 			panel = of_drm_find_panel(panelmap.np);
+#ifdef CONFIG_UCI
+			uci_set_active_panel(panel);
+#endif
 			of_node_put(panelmap.np);
 			if (!IS_ERR_OR_NULL(panel)) {
 				charger->pdata->panel = panel;
