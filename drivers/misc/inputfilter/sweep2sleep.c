@@ -190,7 +190,9 @@ static void s2s_setup_values() {
 //#define HZ_300
 #define HZ_250
 #define CONFIG_DEBUG_S2S
-//#define LOCKSCREEN_PWROFF_WAIT
+
+// pixel lockscreen would kick in, define this:
+#define LOCKSCREEN_PWROFF_WAIT
 
 #ifdef HZ_300
 #define TIME_DIFF 15
@@ -797,7 +799,8 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 					if (last_tap_time_diff < LAST_TAP_TIME_DIFF_DOUBLETAP_MAX) { // previous first touch time and coordinate comparision to detect double tap...
 						if (delta_x < 60 && delta_x > -60 && delta_y < 60 && delta_y > -60) {
 							touch_down_called = false;
-							sweep2sleep_reset(true);
+							sweep2sleep_reset(false); // do not let coordinate freezing yet off, finger is on screen and gesture is still on => (false)
+							filter_coords_status = true; // set filtering on...
 							if (get_s2s_doubletap_mode()==1) { // power button mode
 								if (s2s_kill_app_mode==1) {
 									vib_power = 60;
