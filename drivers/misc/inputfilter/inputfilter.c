@@ -34,7 +34,7 @@ MODULE_LICENSE("GPL");
 #endif
 
 #define IFILTER_PWRKEY_DUR          20
-#define FUNC_CYCLE_DUR          9 + JIFFY_MUL
+#define FUNC_CYCLE_DUR          12 + JIFFY_MUL
 #define VIB_STRENGTH		70
 
 #define IFILTER_SWITCH_STOCK 0
@@ -1129,7 +1129,7 @@ static bool ifilter_input_filter(struct input_handle *handle,
 		return false;
 	}
 
-	if (code != KEY_HOME && code != KEY_WAKEUP) // avoid ?? KEY_EAST ? 305 // OP6
+	if (code != KEY_HOME && code != KEY_WAKEUP && code != KEY_UP && code != KEY_DOWN && code!=BTN_GAMEPAD) // avoid ?? KEY_EAST ? 305 // OP6
 		return false; // do not react on this code...
 
 
