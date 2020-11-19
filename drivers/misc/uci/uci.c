@@ -26,9 +26,9 @@
 //#define UCI_LOG_DEBUG
 
 // comment these when callbacks implemented in drivers
-#define EMPTY_CALLBACKS_TORCH
-#define EMPTY_CALLBACKS_VIB
-#define EMPTY_CALLBACKS_KCAL
+//#define EMPTY_CALLBACKS_TORCH
+//#define EMPTY_CALLBACKS_VIB
+//#define EMPTY_CALLBACKS_KCAL
 #define EMPTY_CALLBACKS_LED_FRONT
 #define EMPTY_CALLBACKS_LED_BACK
 
