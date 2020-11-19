@@ -336,17 +336,25 @@ static void uci_vib_enable(struct drv2624_data *drv2624, enum led_brightness val
 static int drv2624_set_waveform(struct drv2624_data *drv2624,
 				struct drv2624_waveform_sequencer *sequencer);
 
-static void uci_prepare_short(struct drv2624_data *drv2624, int boost) {
+static void uci_prepare(struct drv2624_data *drv2624, int boost, int length) {
 	mutex_lock(&drv2624->lock);
+
+	// new mode: waveform - 1
+	drv2624_change_mode(drv2624, 1);
 
 	// seq: 2 0
 	{
 	        struct drv2624_waveform_sequencer sequencer;
 	        int n;
-		char buf[] = "2 0";
+		static char buf[] = "2 0";
+		static char buf1[] = "1 12 1 12 1 12 1 12";
+		static char buf2[] = "1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12";
+		char *p = buf;
 	        memset(&sequencer, 0, sizeof(sequencer));
 
-	        n = sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
+		if (length>=50) p = buf1;
+		if (length>=150) p = buf2;
+	        n = sscanf(p, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
     	                   &sequencer.waveform[0].effect, &sequencer.waveform[0].loop,
 	                   &sequencer.waveform[1].effect, &sequencer.waveform[1].loop,
 	                   &sequencer.waveform[2].effect, &sequencer.waveform[2].loop,
@@ -363,8 +371,6 @@ static void uci_prepare_short(struct drv2624_data *drv2624, int boost) {
 	drv2624_set_bits(drv2624, DRV2624_REG_CONTROL1, LOOP_MASK,
 		1 << LOOP_SHIFT);
 
-	// new mode: waveform - 1
-	drv2624_change_mode(drv2624, 1);
 
 	// lra_wave_shape = 1
 	drv2624_set_bits(drv2624, DRV2624_REG_LRA_OL_CTRL,
@@ -374,8 +380,18 @@ static void uci_prepare_short(struct drv2624_data *drv2624, int boost) {
 	if (boost<30) boost = 30;
 	drv2624_reg_write(drv2624, DRV2624_REG_OVERDRIVE_CLAMP, boost);
 
-	mutex_unlock(&drv2624->lock);
+	// interval = 0 long, 1 tactile short
+	drv2624_set_bits(drv2624, DRV2624_REG_CONTROL2, INTERVAL_MASK,
+		(length>=50?0:1) << INTERVAL_SHIFT);
 
+	mutex_unlock(&drv2624->lock);
+}
+static void uci_finish(struct drv2624_data *drv2624) {
+	mutex_lock(&drv2624->lock);
+	// set back to 1, short default
+	drv2624_set_bits(drv2624, DRV2624_REG_CONTROL2, INTERVAL_MASK,
+		1 << INTERVAL_SHIFT);
+	mutex_unlock(&drv2624->lock);
 }
 
 static void uci_vibrate_func(struct work_struct * uci_vibrate_func_work)
@@ -394,7 +410,7 @@ static void uci_vibrate_func(struct work_struct * uci_vibrate_func_work)
 
     if (start) {
 // start
-	uci_prepare_short(g_drv2624, boost_level);
+	uci_prepare(g_drv2624, boost_level,num);
 	uci_vib_enable(g_drv2624,255);
     }
     if (start && stop) {
@@ -406,6 +422,7 @@ static void uci_vibrate_func(struct work_struct * uci_vibrate_func_work)
     if (stop) {
 // stop
 	uci_vib_enable(g_drv2624,LED_OFF);
+	uci_finish(g_drv2624);
     }
 out:
     pr_info("%s exit\n",__func__);
