@@ -207,7 +207,7 @@ static void uci_user_listener(void) {
         rgb_pulse_blink_on_charger = !!uci_get_user_property_int_mm("bln_rgb_pulse_blink_on_charger", 0, 0, 1);
         rgb_pulse_blink_on_charger_red_limit = uci_get_user_property_int_mm("bln_rgb_pulse_blink_on_charger_red_limit", 70, 0, 100);
 
-	notification_booster_overdrive_perc = uci_get_user_property_int_mm("notification_booster_overdrive_perc", 10, 0, 40);
+	notification_booster_overdrive_perc = uci_get_user_property_int_mm("notification_booster_overdrive_perc", 10, 0, 100);
 	boost_only_in_pocket = !!uci_get_user_property_int_mm("boost_only_in_pocket", 0, 0, 1);
 	uci_vibration_set_in_pocket( (!ntf_is_screen_on() && boost_only_in_pocket)?notification_booster_overdrive_perc:0, (boost_only_in_pocket&&!ntf_is_screen_on())?in_pocket:false);
 
