@@ -336,6 +336,22 @@ static void uci_vib_enable(struct drv2624_data *drv2624, enum led_brightness val
 static int drv2624_set_waveform(struct drv2624_data *drv2624,
 				struct drv2624_waveform_sequencer *sequencer);
 
+
+/* sample script:
+#!/bin/sh
+
+DPATH=/sys/devices/platform/soc/98c000.i2c/i2c-1/1-005a
+echo "waveform" > $DPATH/mode
+echo "1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12" > $DPATH/set_sequencer
+echo "0" > $DPATH/ctrl_loop
+echo "1" > $DPATH/lra_period
+echo "1" > $DPATH/lra_wave_shape
+echo "95" > $DPATH/od_clamp
+echo "0" > $DPATH/interval
+
+echo "1" > /sys/class/leds/vibrator/activate
+*/
+
 static void uci_prepare(struct drv2624_data *drv2624, int boost, int length) {
 	mutex_lock(&drv2624->lock);
 
@@ -347,13 +363,13 @@ static void uci_prepare(struct drv2624_data *drv2624, int boost, int length) {
 	        struct drv2624_waveform_sequencer sequencer;
 	        int n;
 		static char buf[] = "2 0";
-		static char buf1[] = "1 12 1 12 1 12 1 12";
+		static char buf1[] = "1 12 1 12 1 12 1 12 1 12";
 		static char buf2[] = "1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12";
 		char *p = buf;
 	        memset(&sequencer, 0, sizeof(sequencer));
 
 		if (length>=50) p = buf1;
-		if (length>=150) p = buf2;
+		if (length>=250) p = buf2;
 	        n = sscanf(p, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
     	                   &sequencer.waveform[0].effect, &sequencer.waveform[0].loop,
 	                   &sequencer.waveform[1].effect, &sequencer.waveform[1].loop,
@@ -367,9 +383,9 @@ static void uci_prepare(struct drv2624_data *drv2624, int boost, int length) {
 		drv2624_set_waveform(drv2624, &sequencer);
 	}
 
-	// ctrl loop = 1
+	// ctrl loop = 1 / 0 (0 is much stronger)
 	drv2624_set_bits(drv2624, DRV2624_REG_CONTROL1, LOOP_MASK,
-		1 << LOOP_SHIFT);
+		length>=50?0:1 << LOOP_SHIFT);
 
 
 	// lra_wave_shape = 1
@@ -391,6 +407,9 @@ static void uci_finish(struct drv2624_data *drv2624) {
 	// set back to 1, short default
 	drv2624_set_bits(drv2624, DRV2624_REG_CONTROL2, INTERVAL_MASK,
 		1 << INTERVAL_SHIFT);
+	// set back ctrl_loop to 1
+	drv2624_set_bits(drv2624, DRV2624_REG_CONTROL1, LOOP_MASK,
+		1 << LOOP_SHIFT);
 	mutex_unlock(&drv2624->lock);
 }
 
@@ -459,7 +478,7 @@ void set_vibrate_int(int num, int boost_level, bool start, bool stop) {
 
 
 void set_vibrate_boosted(int num) {
-        set_vibrate_int(num, 40, true,true);
+        set_vibrate_int(num, 107, true,true);
 }
 EXPORT_SYMBOL(set_vibrate_boosted);
 void set_vibrate(int num) {
