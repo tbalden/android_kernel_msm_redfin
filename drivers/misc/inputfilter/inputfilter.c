@@ -810,7 +810,7 @@ static DECLARE_DELAYED_WORK(ifilter_presspwr_work, ifilter_presspwr);
 
 static void ifilter_vib(void) {
 	// avoid using squeeze vib length 15...
-	set_vibrate(get_vib_strength()==15?14:get_vib_strength());
+	set_vibrate_2(20,get_vib_strength());
 }
 static void ifilter_vib_work_func(struct work_struct * ifilter_vib_work) {
 	ifilter_vib();
