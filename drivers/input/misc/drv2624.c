@@ -471,7 +471,6 @@ void set_vibrate_2(int num, int boost_level) {
 }
 EXPORT_SYMBOL(set_vibrate_2);
 
-// TODO
 static int booster_percentage = 0;
 static bool booster_in_pocket = false;
 
@@ -481,6 +480,16 @@ void uci_vibration_set_in_pocket(int percentage, bool in_pocket) {
 }
 EXPORT_SYMBOL(uci_vibration_set_in_pocket);
 
+#define MAX_GAIN 127
+
+static int uci_calc_gain(int gain) {
+        if (booster_in_pocket) {
+                int c = (gain * (100+(booster_percentage*2)))/100;
+                if (c>MAX_GAIN) c = MAX_GAIN;
+                return c;
+        }
+        return gain;
+}
 
 #endif
 
@@ -1238,7 +1247,9 @@ static ssize_t rtp_input_store(struct device *dev,
 		return ret;
 	}
 #ifdef CONFIG_UCI
-	pr_info("%s drv2624 - val: %s\n",__func__, rtp_input);
+	pr_info("%s drv2624 - val: %lu\n",__func__, rtp_input);
+	rtp_input = uci_calc_gain(rtp_input);
+	pr_info("%s drv2624 - calced new val: %lu\n",__func__, rtp_input);
 #endif
 
 	mutex_lock(&drv2624->lock);
