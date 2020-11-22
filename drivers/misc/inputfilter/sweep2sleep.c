@@ -187,9 +187,9 @@ static void s2s_setup_values() {
 #endif
 }
 
-//#define HZ_300
-#define HZ_250
-#define CONFIG_DEBUG_S2S
+#define HZ_300
+//#define HZ_250
+//#define CONFIG_DEBUG_S2S
 
 // pixel lockscreen would kick in, define this:
 #define LOCKSCREEN_PWROFF_WAIT
@@ -210,7 +210,7 @@ static int get_s2s_longtap_min_holdtime(void) {
 
 #ifdef HZ_250
 	return (s2s_longtap_min_holdtime * 250 / 300);
-#elif
+#else
 	return s2s_longtap_min_holdtime;
 #endif
 }
@@ -433,7 +433,7 @@ static void detect_sweep2sleep(int x, int y, bool st)
 			if (((x > firstx + (15 + get_s2s_width()*0.3)) && first_event) || get_s2s_continuous_vib()) { // signal gesture start with vib, or continuously. Only start when at least X coordinate moved a little bit from first touch X (~20px)
 				if (exec_count) {
 					unsigned int last_vib_diff = jiffies - last_scheduled_vib_time;
-					if (barrier[1] == true) { vib_power = 50; } else { vib_power = get_s2s_continuous_vib()?1:60; }
+					if (barrier[1] == true) { vib_power = 50; } else { vib_power = get_s2s_continuous_vib()?1:70; }
 					if (last_vib_diff > TIME_DIFF) {
 						schedule_work(&sweep2sleep_vib_work);
 						last_scheduled_vib_time = jiffies;
@@ -458,7 +458,7 @@ static void detect_sweep2sleep(int x, int y, bool st)
 					if (x > (nextx + x_threshold_1)) {
 						if (exec_count) {
 							if (s2s_kill_app_mode==3) {
-								vib_power = 60;
+								vib_power = 80;
 								schedule_work(&sweep2sleep_vib_work);
 								write_uci_out("fp_kill_app");
 							} else {
@@ -486,7 +486,7 @@ static void detect_sweep2sleep(int x, int y, bool st)
 			if (((x < firstx - (15 + get_s2s_width()*0.3)) && first_event) || get_s2s_continuous_vib()) { // signal gesture start with vib, or continuously. Only start when at least X coordinate moved a little bit from first touch X (~20px)
 				if (exec_count) {
 					unsigned int last_vib_diff = jiffies - last_scheduled_vib_time;
-					if (barrier[1] == true) { vib_power = 50; } else { vib_power = get_s2s_continuous_vib()?1:60; }
+					if (barrier[1] == true) { vib_power = 50; } else { vib_power = get_s2s_continuous_vib()?1:70; }
 					if (last_vib_diff > TIME_DIFF) {
 						schedule_work(&sweep2sleep_vib_work);
 						last_scheduled_vib_time = jiffies;
@@ -511,7 +511,7 @@ static void detect_sweep2sleep(int x, int y, bool st)
 					if (x < (nextx - x_threshold_1)) {
 						if (exec_count) {
 							if (s2s_kill_app_mode==3) {
-								vib_power = 60;
+								vib_power = 80;
 								schedule_work(&sweep2sleep_vib_work);
 								write_uci_out("fp_kill_app");
 							} else {
@@ -692,7 +692,7 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 				// first touch time is very close and didn't move more than 20px before leaving screen... finishing that touch within the area? vibrate...
 				if (last_tap_time_diff < LAST_TAP_TIME_DIFF_VIBRATE) {
 					if (!get_s2s_longtap_switch()) { // if not in longtap mode, then vibrate here (otherwise first touch already vibrates in other part of driver)
-						vib_power = 60;
+						vib_power = 70;
 						schedule_work(&sweep2sleep_vib_work);
 					}
 				}
@@ -803,7 +803,7 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 							filter_coords_status = true; // set filtering on...
 							if (get_s2s_doubletap_mode()==1) { // power button mode
 								if (s2s_kill_app_mode==1) {
-									vib_power = 60;
+									vib_power = 90;
 									schedule_work(&sweep2sleep_vib_work);
 									write_uci_out("fp_kill_app");
 								} else {
@@ -814,7 +814,7 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 									sweep2sleep_pwrtrigger();
 								}
 							} else { // mode 2
-								vib_power = 60;
+								vib_power = 90;
 								schedule_work(&sweep2sleep_vib_work);
 								if (s2s_kill_app_mode==2) {
 									write_uci_out("fp_kill_app");
@@ -834,7 +834,7 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 					}
 					store_doubletap_touch();
 					if (get_s2s_longtap_switch()) {
-						vib_power = 70;
+						vib_power = 80;
 						schedule_work(&sweep2sleep_vib_work);
 						schedule_work(&sweep2sleep_longtap_count_work);
 					}
