@@ -1035,6 +1035,10 @@ void register_fp_wake(void) {
 			ts_poke();
 		}
 	}
+
+// pixel 5
+	ntf_input_event(__func__,"");
+
 // fp tee driver does not call ever the register_fp_irq part, so the vibration based detection will handle register input event part instead. Leave this commented, to avoid "pocket-touches" cancelling out notifications
 /*	if (init_done && (!kad_running || !get_kad_disable_fp_input()) && screen_on_full) {
 		ktime_t wakeup_time;
