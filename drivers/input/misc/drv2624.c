@@ -215,10 +215,16 @@ static int drv2624_set_go_bit(struct drv2624_data *drv2624, unsigned char val)
 
 	return ret;
 }
+#ifdef CONFIG_UCI
+unsigned char uci_work_mode = 0;
+#endif
 
 static void drv2624_change_mode(struct drv2624_data *drv2624,
 				unsigned char work_mode)
 {
+#ifdef CONFIG_UCI
+	uci_work_mode = work_mode;
+#endif
 	drv2624_set_bits(drv2624, DRV2624_REG_MODE, WORKMODE_MASK, work_mode);
 }
 
@@ -319,7 +325,44 @@ static bool vib_func_start = 0;
 static bool vib_func_stop = 0;
 static bool vib_func_params_read = true;
 
+static int booster_percentage = 0;
+static bool booster_in_pocket = false;
+
+static int haptic_percentage = 0;
+
 static struct workqueue_struct *vib_func_wq;
+
+#define MAX_GAIN 127
+
+static int uci_calc_gain(int gain) {
+        if (booster_in_pocket) {
+                int c = (gain * (100+(booster_percentage*2)))/100;
+                if (c>MAX_GAIN) c = MAX_GAIN;
+                return c;
+        }
+        return gain;
+}
+
+// 10 - 107 - normal. 180+ rattles...
+#define MAX_CLAMP 180
+static int uci_calc_clamp(int clamp, int mode) {
+	if (mode == MODE_RTP) {
+	        if (booster_in_pocket) {
+	                int c = (clamp * (100+(booster_percentage+60)))/100;
+	                if (c>MAX_CLAMP) c = MAX_CLAMP;
+			pr_info("%s drv2624: calc override (rtp) calc: %d -> %d\n",__func__,clamp,c);
+	                return c;
+	        }
+	} else {
+		// haptic
+		int c = (clamp * (100+(haptic_percentage)))/100;
+		if (c>MAX_CLAMP) c = MAX_CLAMP;
+		pr_info("%s drv2624: calc override (waveform) calc: %d -> %d\n",__func__,clamp,c);
+		return c;
+	}
+        return clamp;
+}
+
 
 static void uci_vib_enable(struct drv2624_data *drv2624, enum led_brightness value) {
 	if (value == LED_OFF)
@@ -394,6 +437,7 @@ static void uci_prepare(struct drv2624_data *drv2624, int boost, int length) {
 
 	// od_clamp = 50/74
 	if (boost<30) boost = 30;
+	boost = uci_calc_clamp(boost,MODE_WAVEFORM_SEQUENCER);
 	drv2624_reg_write(drv2624, DRV2624_REG_OVERDRIVE_CLAMP, boost);
 
 	// interval = 0 long, 1 tactile short
@@ -490,25 +534,18 @@ void set_vibrate_2(int num, int boost_level) {
 }
 EXPORT_SYMBOL(set_vibrate_2);
 
-static int booster_percentage = 0;
-static bool booster_in_pocket = false;
 
-void uci_vibration_set_in_pocket(int percentage, bool in_pocket) {
+void ntf_vibration_set_in_pocket(int percentage, bool in_pocket) {
         booster_percentage = percentage;
         booster_in_pocket = in_pocket;
 }
-EXPORT_SYMBOL(uci_vibration_set_in_pocket);
+EXPORT_SYMBOL(ntf_vibration_set_in_pocket);
 
-#define MAX_GAIN 127
-
-static int uci_calc_gain(int gain) {
-        if (booster_in_pocket) {
-                int c = (gain * (100+(booster_percentage*2)))/100;
-                if (c>MAX_GAIN) c = MAX_GAIN;
-                return c;
-        }
-        return gain;
+void ntf_vibration_set_haptic(int percentage) {
+        haptic_percentage = percentage;
 }
+EXPORT_SYMBOL(ntf_vibration_set_haptic);
+
 
 #endif
 
@@ -1556,7 +1593,9 @@ static ssize_t od_clamp_store(struct device *dev,
 	}
 
 #ifdef CONFIG_UCI
-	pr_info("%s drv2624 - val: %d\n",__func__, od_clamp);
+	pr_info("%s drv2624 - val: %d - workmode: %d\n",__func__, od_clamp, uci_work_mode);
+	od_clamp = uci_calc_clamp(od_clamp, uci_work_mode);
+	pr_info("%s drv2624 - new calculated val: %d - workmode: %d\n",__func__, od_clamp, uci_work_mode);
 #endif
 
 	mutex_lock(&drv2624->lock);
