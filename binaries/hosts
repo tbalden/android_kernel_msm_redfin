@@ -1,8 +1,8 @@
 # This hosts file is a merged collection of hosts from reputable sources,
 # with a dash of crowd sourcing via Github
 #
-# Date: November 24 2020
-# Number of unique domains: 53,058
+# Date: November 25 2020
+# Number of unique domains: 53,124
 #
 # Fetch the latest version of this file: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 # Project home page: https://github.com/StevenBlack/hosts
@@ -43,7 +43,7 @@ fe80::1%lo0 localhost
 
 
 
-# Last updated: Mon, 23 Nov 2020 at 07:13:43 GMT
+# Last updated: Wed, 25 Nov 2020 at 08:10:27 GMT
 
 
 
@@ -2428,7 +2428,6 @@ fe80::1%lo0 localhost
 0.0.0.0 ca8g5.win
 0.0.0.0 cablyshaw.com
 0.0.0.0 cafecoc.com
-0.0.0.0 cahoots.com
 0.0.0.0 callawaypos.com
 0.0.0.0 callbling.com
 0.0.0.0 cambonanza.com
@@ -6366,6 +6365,7 @@ fe80::1%lo0 localhost
 0.0.0.0 ads.yimg.com.edgesuite.net
 0.0.0.0 ads.yldmgrimg.net
 0.0.0.0 ads.youporn.com
+0.0.0.0 ads.youtube.com
 0.0.0.0 ads.zamunda.se
 0.0.0.0 ads.zap2it.com
 0.0.0.0 ads.zdnet.com
@@ -15195,9 +15195,9 @@ fe80::1%lo0 localhost
 
 # Description: Filtry chroniace przed roznego rodzaju przekretami i oszustwami, takimi jak np. subskrypcje SMS, wirusy i falszywe sklepy internetowe. Oprocz wlasnego zestawu, zawieraja one rowniez wpisy z list stworzonych przez takie zespoly jak np. CERT Polska, legalniewsieci.pl i KNF.
 
-# Last modified: Mon, 23 Nov 2020, 23:49 UTC+01
+# Last modified: Wed, 25 Nov 2020, 12:07 UTC+01
 
-# Version: 2020.11.23.3
+# Version: 2020.11.25.0
 
 # Expires: 2 days
 
@@ -15891,6 +15891,7 @@ fe80::1%lo0 localhost
 0.0.0.0 halopozyczka.pl
 0.0.0.0 hammessandandgravel.com
 0.0.0.0 happybinko.pl
+0.0.0.0 hart-profil.pl
 0.0.0.0 havemeforfree.com
 0.0.0.0 hawanczykaura.com.pl
 0.0.0.0 hdmovies.pl
@@ -15950,6 +15951,7 @@ fe80::1%lo0 localhost
 0.0.0.0 inshopys.com
 0.0.0.0 inspektorzyzieleni.pl
 0.0.0.0 instantgiftcodes.com
+0.0.0.0 instastory.pl
 0.0.0.0 instrukcjapolska.pl
 0.0.0.0 instytutmed.pl
 0.0.0.0 instytut-pomocy.pl
@@ -16320,6 +16322,7 @@ fe80::1%lo0 localhost
 0.0.0.0 narzedzia.club
 0.0.0.0 nasdacoin.io
 0.0.0.0 nassy.pl
+0.0.0.0 nastik5.com
 0.0.0.0 naszgrojec.net.pl
 0.0.0.0 naszregion24.pl
 0.0.0.0 natematprawa.pl
@@ -17750,6 +17753,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.inshopys.com
 0.0.0.0 www.inspektorzyzieleni.pl
 0.0.0.0 www.instantgiftcodes.com
+0.0.0.0 www.instastory.pl
 0.0.0.0 www.instrukcjapolska.pl
 0.0.0.0 www.instytutmed.pl
 0.0.0.0 www.intergsm.pl
@@ -18068,6 +18072,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.narzedzia.club
 0.0.0.0 www.nasdacoin.io
 0.0.0.0 www.nassy.pl
+0.0.0.0 www.nastik5.com
 0.0.0.0 www.naszgrojec.net.pl
 0.0.0.0 www.naszregion24.pl
 0.0.0.0 www.natematprawa.pl
@@ -18986,6 +18991,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.graffit-zmienkolor.pl
 0.0.0.0 www.gustaw-harnas.pl
 0.0.0.0 www.hackerspace-lbn.pl
+0.0.0.0 www.hart-profil.pl
 0.0.0.0 www.healthy-news.biz
 0.0.0.0 www.health-line.me
 0.0.0.0 www.health-partner.net
@@ -20226,6 +20232,7 @@ fe80::1%lo0 localhost
 0.0.0.0 cennik-paczkl.space
 0.0.0.0 cennlk-przesylki.online
 0.0.0.0 centralmovies.network
+0.0.0.0 centram24.pl
 0.0.0.0 centrolinguisticorobert.com
 0.0.0.0 centrum24.santanber.pl
 0.0.0.0 centrumkrakowska.com.pl
@@ -20343,6 +20350,7 @@ fe80::1%lo0 localhost
 0.0.0.0 czemarserwis.home.pl
 0.0.0.0 czerwinski.ciesielstwo.cba.pl
 0.0.0.0 czyn-pomocy.eu
+0.0.0.0 d0stawadhi.com
 0.0.0.0 d3rzloh6xv2xem.cloudfront.net
 0.0.0.0 d26sio54efdz72.cloudfront.net
 0.0.0.0 dachbud.slask.pl
@@ -20379,6 +20387,7 @@ fe80::1%lo0 localhost
 0.0.0.0 delivery.olx-pl.link
 0.0.0.0 delivery.olx-pl.me
 0.0.0.0 delivery.olx-pl.shop
+0.0.0.0 delivery.olx-pl.us
 0.0.0.0 delivery.olx-pl.work
 0.0.0.0 deliver-post.com
 0.0.0.0 del-sieradz.neostrada.pl
@@ -20458,6 +20467,7 @@ fe80::1%lo0 localhost
 0.0.0.0 dostarczenie.com
 0.0.0.0 dostarczymy.com
 0.0.0.0 dostava24.online
+0.0.0.0 dostava-olx.pl
 0.0.0.0 dostawa24-olx.pl
 0.0.0.0 dostawaca24.online
 0.0.0.0 dostawajaros.top
@@ -20880,6 +20890,7 @@ fe80::1%lo0 localhost
 0.0.0.0 furgonetka.online
 0.0.0.0 furgonetka.pro
 0.0.0.0 furgonetka24.com
+0.0.0.0 futureadpro.com
 0.0.0.0 futurepay.globway.eu
 0.0.0.0 futuresbtcoffersnew.com
 0.0.0.0 fx24options.org
@@ -20905,6 +20916,7 @@ fe80::1%lo0 localhost
 0.0.0.0 gazetapolska.org.pl
 0.0.0.0 gazetapucka.pl
 0.0.0.0 gazetasasiedzka.eu
+0.0.0.0 gazetatymczasem77.online
 0.0.0.0 gazetawyborcza.com.pl
 0.0.0.0 gazeta-natemat-pol.eu
 0.0.0.0 gazeta-potwierdz.co.pl
@@ -20925,6 +20937,7 @@ fe80::1%lo0 localhost
 0.0.0.0 generujkody.me
 0.0.0.0 generujkody.net
 0.0.0.0 generuj-kod.me
+0.0.0.0 genievba.ch
 0.0.0.0 genowefakurier.org
 0.0.0.0 gensminers.com
 0.0.0.0 genyconsumerbehaviour.xyz
@@ -21048,6 +21061,7 @@ fe80::1%lo0 localhost
 0.0.0.0 host1.5v.pl
 0.0.0.0 hosting2019336.online.pro
 0.0.0.0 hosting2029570.online.pro
+0.0.0.0 hosting2036547.online.pro
 0.0.0.0 hosting2043614.online.pro
 0.0.0.0 hostkrd.ovh
 0.0.0.0 hostplik.pl
@@ -21074,6 +21088,7 @@ fe80::1%lo0 localhost
 0.0.0.0 icloud.find-ip.us
 0.0.0.0 iconsumerstocksymbol.icu
 0.0.0.0 id95972.net
+0.0.0.0 id838101.xyz
 0.0.0.0 idcase-99131255.gentlebrooksports.org
 0.0.0.0 ideabank-login.xyz
 0.0.0.0 ideabank-logowanie.at
@@ -21457,6 +21472,7 @@ fe80::1%lo0 localhost
 0.0.0.0 localnewshere.site
 0.0.0.0 locked3.com
 0.0.0.0 login.microsoftorline.com
+0.0.0.0 login.ntf.wojtek.co.pl
 0.0.0.0 login.unlimited.serials.movies.tv.shows.ganjrss.ir
 0.0.0.0 logintofb.tcp4.me
 0.0.0.0 login-allorbank.com
@@ -21686,6 +21702,7 @@ fe80::1%lo0 localhost
 0.0.0.0 naszapolskaa.online
 0.0.0.0 naszapolskaa.xyz
 0.0.0.0 naszawiadomosc.online
+0.0.0.0 naszdom.you2.pl
 0.0.0.0 naszemiasto.dkonto.pl
 0.0.0.0 naszepanstwo.xyz
 0.0.0.0 naszewiadomosci.site
@@ -21920,6 +21937,9 @@ fe80::1%lo0 localhost
 0.0.0.0 olx.pl.wysylka.net
 0.0.0.0 olx.pl.wysylka.site
 0.0.0.0 olx.pl.zaplacic.info
+0.0.0.0 olx.przesylki.biz
+0.0.0.0 olx.przesylki.name
+0.0.0.0 olx.rwpay.ru
 0.0.0.0 olx.ua.delivery.consulting
 0.0.0.0 olx.zaplacic.info
 0.0.0.0 olxdostawa.com
@@ -21955,6 +21975,8 @@ fe80::1%lo0 localhost
 0.0.0.0 olx-deliverry.info
 0.0.0.0 olx-deliverry.name
 0.0.0.0 olx-delivery.biz
+0.0.0.0 olx-dostava.pl
+0.0.0.0 olx-dostawa.eu
 0.0.0.0 olx-dostawa.me
 0.0.0.0 olx-dostawa.name
 0.0.0.0 olx-dostawa.pl
@@ -21965,6 +21987,8 @@ fe80::1%lo0 localhost
 0.0.0.0 olx-m.pl
 0.0.0.0 olx-managment.pl
 0.0.0.0 olx-messenger.com
+0.0.0.0 olx-n.pl
+0.0.0.0 olx-oferta.com
 0.0.0.0 olx-oferta.eu
 0.0.0.0 olx-oferta.ink
 0.0.0.0 olx-oferta.pl
@@ -21977,6 +22001,7 @@ fe80::1%lo0 localhost
 0.0.0.0 olx-pay.org
 0.0.0.0 olx-payments.pl
 0.0.0.0 olx-pays.pl
+0.0.0.0 olx-pay-in.pl
 0.0.0.0 olx-pl.cc
 0.0.0.0 olx-pl.dostawa.pro
 0.0.0.0 olx-pl.eu
@@ -21988,6 +22013,7 @@ fe80::1%lo0 localhost
 0.0.0.0 olx-pl.online
 0.0.0.0 olx-pl.org
 0.0.0.0 olx-pl.pl
+0.0.0.0 olx-pl.pro
 0.0.0.0 olx-pl.pw
 0.0.0.0 olx-pl.su
 0.0.0.0 olx-pl-oferta.eu
@@ -22006,8 +22032,10 @@ fe80::1%lo0 localhost
 0.0.0.0 olx.3d-security.info
 0.0.0.0 olx.epay-trade.ru
 0.0.0.0 olx.informacja-pl.info
+0.0.0.0 olx.merch-pays.ru
 0.0.0.0 olx.oplata-is.com
 0.0.0.0 olx.payment-otrymac.info
+0.0.0.0 olx.payment-otrymac.online
 0.0.0.0 olx.pl-id202011-order.site
 0.0.0.0 olx.pl-id2046801-order.ru
 0.0.0.0 olx.pl-oferta.com
@@ -22186,6 +22214,7 @@ fe80::1%lo0 localhost
 0.0.0.0 pakownia.net
 0.0.0.0 palenate.com
 0.0.0.0 pamelambarnettcounseling.com
+0.0.0.0 pandora-konkurs.com.pl
 0.0.0.0 pandora-konkurs.pl
 0.0.0.0 panel.home.pl.frustone.it
 0.0.0.0 panel.home.pl.muna.it
@@ -22249,6 +22278,7 @@ fe80::1%lo0 localhost
 0.0.0.0 pensjonatsportowy.pl
 0.0.0.0 performancevitality.net
 0.0.0.0 perspektywa2012.za.pl
+0.0.0.0 peypeo24.net
 0.0.0.0 pgebok.com
 0.0.0.0 pge-bok.pl
 0.0.0.0 phikunprogramming.com
@@ -22271,6 +22301,7 @@ fe80::1%lo0 localhost
 0.0.0.0 pko-bp.pl
 0.0.0.0 pl.allsports4free.club
 0.0.0.0 pl.bitcoinmethodpro.com
+0.0.0.0 pl.dlawasteraz20.club
 0.0.0.0 pl.mevida.me
 0.0.0.0 pl.mysafesmartphone.com
 0.0.0.0 pl.olx.oferta.design
@@ -22481,6 +22512,7 @@ fe80::1%lo0 localhost
 0.0.0.0 poszukiwaniaonline.eu
 0.0.0.0 poszukiwaniaonline.you2.pl
 0.0.0.0 poszukiwaniaosobzaginionych.you2.pl
+0.0.0.0 poszukuiwania24.dkonto.pl
 0.0.0.0 potwierdzenie-zamowienie.xyz
 0.0.0.0 powaifinearts.org
 0.0.0.0 powiat24wiadomosci.pl
@@ -22554,6 +22586,7 @@ fe80::1%lo0 localhost
 0.0.0.0 przesyika-pl.host
 0.0.0.0 przesylka.website
 0.0.0.0 przesylka24.xyz
+0.0.0.0 przesylka-olx.pl
 0.0.0.0 przesylki-olx.pl
 0.0.0.0 przewozinik.online
 0.0.0.0 przezwyciezenie-leku.eu
@@ -22651,6 +22684,7 @@ fe80::1%lo0 localhost
 0.0.0.0 roundcube.pl
 0.0.0.0 rozakurier.com
 0.0.0.0 rozakurier.org
+0.0.0.0 rozgrywanie-konkursu.eu
 0.0.0.0 rozgrywka-oceniaj.eu
 0.0.0.0 roznehistorie.pl
 0.0.0.0 ruesichtsetri1906.blogspot.com
@@ -22691,6 +22725,7 @@ fe80::1%lo0 localhost
 0.0.0.0 seansikowo.pl
 0.0.0.0 searchwinner.site
 0.0.0.0 secure.mwwi.pl
+0.0.0.0 secure167.servconfig.com
 0.0.0.0 secureclick20.com
 0.0.0.0 secure-bank-getin.xyz
 0.0.0.0 secure-bnpparibas.at
@@ -23076,6 +23111,7 @@ fe80::1%lo0 localhost
 0.0.0.0 typowanie-glosuj.eu
 0.0.0.0 typuj-wyniki.eu
 0.0.0.0 tzr.grejt.pl
+0.0.0.0 u19432194.ct.sendgrid.net
 0.0.0.0 uatesnicknam.xyz
 0.0.0.0 ubgroupbk.com
 0.0.0.0 ubranieburton.pl
@@ -23557,6 +23593,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.cdsp.pl
 0.0.0.0 www.cengizguler.com.tr
 0.0.0.0 www.centralmovies.network
+0.0.0.0 www.centram24.pl
 0.0.0.0 www.centrolinguisticorobert.com
 0.0.0.0 www.centrum24.santanber.pl
 0.0.0.0 www.centrumkrakowska.com.pl
@@ -23648,6 +23685,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.czasnakino.pl
 0.0.0.0 www.czemarserwis.home.pl
 0.0.0.0 www.czerwinski.ciesielstwo.cba.pl
+0.0.0.0 www.d0stawadhi.com
 0.0.0.0 www.d3rzloh6xv2xem.cloudfront.net
 0.0.0.0 www.d26sio54efdz72.cloudfront.net
 0.0.0.0 www.dachbud.slask.pl
@@ -24009,6 +24047,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.furgonetka24.com
 0.0.0.0 www.furgonetka.online
 0.0.0.0 www.furgonetka.pro
+0.0.0.0 www.futureadpro.com
 0.0.0.0 www.futurepay.globway.eu
 0.0.0.0 www.futuresbtcoffersnew.com
 0.0.0.0 www.fx24options.org
@@ -24031,6 +24070,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.gazetapolska.org.pl
 0.0.0.0 www.gazetapucka.pl
 0.0.0.0 www.gazetasasiedzka.eu
+0.0.0.0 www.gazetatymczasem77.online
 0.0.0.0 www.gazetawyborcza.com.pl
 0.0.0.0 www.gazeta.pl.com.bz
 0.0.0.0 www.gazetkamazowsze.pl
@@ -24047,6 +24087,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.generujkody.com
 0.0.0.0 www.generujkody.me
 0.0.0.0 www.generujkody.net
+0.0.0.0 www.genievba.ch
 0.0.0.0 www.genowefakurier.org
 0.0.0.0 www.gensminers.com
 0.0.0.0 www.genyconsumerbehaviour.xyz
@@ -24135,6 +24176,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.hondamarket.pl
 0.0.0.0 www.hosting2019336.online.pro
 0.0.0.0 www.hosting2029570.online.pro
+0.0.0.0 www.hosting2036547.online.pro
 0.0.0.0 www.hosting2043614.online.pro
 0.0.0.0 www.hostkrd.ovh
 0.0.0.0 www.hostplik.pl
@@ -24153,6 +24195,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.icleanammunitio.xyz
 0.0.0.0 www.iconsumerstocksymbol.icu
 0.0.0.0 www.id95972.net
+0.0.0.0 www.id838101.xyz
 0.0.0.0 www.idealnafigura.com
 0.0.0.0 www.idecloud.com.pl
 0.0.0.0 www.idklever.com
@@ -24418,6 +24461,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.locked3.com
 0.0.0.0 www.logintofb.tcp4.me
 0.0.0.0 www.login.microsoftorline.com
+0.0.0.0 www.login.ntf.wojtek.co.pl
 0.0.0.0 www.login.unlimited.serials.movies.tv.shows.ganjrss.ir
 0.0.0.0 www.logowanie.dkonto.pl
 0.0.0.0 www.lokaineogloszenie.live
@@ -24579,6 +24623,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.naszapolskaa.online
 0.0.0.0 www.naszapolskaa.xyz
 0.0.0.0 www.naszawiadomosc.online
+0.0.0.0 www.naszdom.you2.pl
 0.0.0.0 www.naszemiasto.dkonto.pl
 0.0.0.0 www.naszepanstwo.xyz
 0.0.0.0 www.naszewiadomosci.site
@@ -24761,6 +24806,9 @@ fe80::1%lo0 localhost
 0.0.0.0 www.olx.pl.wysylka.net
 0.0.0.0 www.olx.pl.wysylka.site
 0.0.0.0 www.olx.pl.zaplacic.info
+0.0.0.0 www.olx.przesylki.biz
+0.0.0.0 www.olx.przesylki.name
+0.0.0.0 www.olx.rwpay.ru
 0.0.0.0 www.olx.ua.delivery.consulting
 0.0.0.0 www.olx.zaplacic.info
 0.0.0.0 www.olympusmarkets.com
@@ -24910,6 +24958,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.pensjonatsportowy.pl
 0.0.0.0 www.performancevitality.net
 0.0.0.0 www.perspektywa2012.za.pl
+0.0.0.0 www.peypeo24.net
 0.0.0.0 www.pgebok.com
 0.0.0.0 www.phikunprogramming.com
 0.0.0.0 www.piastpatrol.pl
@@ -25034,6 +25083,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.poszukiwaniaonline.eu
 0.0.0.0 www.poszukiwaniaonline.you2.pl
 0.0.0.0 www.poszukiwaniaosobzaginionych.you2.pl
+0.0.0.0 www.poszukuiwania24.dkonto.pl
 0.0.0.0 www.powaifinearts.org
 0.0.0.0 www.powiat24wiadomosci.pl
 0.0.0.0 www.pozyczkatotu.pl
@@ -25172,6 +25222,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.sdx.pl
 0.0.0.0 www.seansikowo.pl
 0.0.0.0 www.searchwinner.site
+0.0.0.0 www.secure167.servconfig.com
 0.0.0.0 www.secureclick20.com
 0.0.0.0 www.secure.mwwi.pl
 0.0.0.0 www.segregations.xyz
@@ -25434,6 +25485,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.twojebony.com.pl
 0.0.0.0 www.twojkurier.com
 0.0.0.0 www.tzr.grejt.pl
+0.0.0.0 www.u19432194.ct.sendgrid.net
 0.0.0.0 www.uatesnicknam.xyz
 0.0.0.0 www.ubgroupbk.com
 0.0.0.0 www.ubranieburton.pl
@@ -25878,6 +25930,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.delivery.olx-pl.link
 0.0.0.0 www.delivery.olx-pl.me
 0.0.0.0 www.delivery.olx-pl.shop
+0.0.0.0 www.delivery.olx-pl.us
 0.0.0.0 www.delivery.olx-pl.work
 0.0.0.0 www.deliver-post.com
 0.0.0.0 www.del-sieradz.neostrada.pl
@@ -25897,6 +25950,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.doladowania-telefonu.pl
 0.0.0.0 www.domena-informacyjna.dkonto.pl
 0.0.0.0 www.domowe-kino.pl
+0.0.0.0 www.dostava-olx.pl
 0.0.0.0 www.dostawa24-olx.pl
 0.0.0.0 www.dostawa-dhl.net
 0.0.0.0 www.dostawa-olx.eu
@@ -26368,6 +26422,8 @@ fe80::1%lo0 localhost
 0.0.0.0 www.olx-deliverry.info
 0.0.0.0 www.olx-deliverry.name
 0.0.0.0 www.olx-delivery.biz
+0.0.0.0 www.olx-dostava.pl
+0.0.0.0 www.olx-dostawa.eu
 0.0.0.0 www.olx-dostawa.me
 0.0.0.0 www.olx-dostawa.name
 0.0.0.0 www.olx-dostawa.pl
@@ -26378,6 +26434,8 @@ fe80::1%lo0 localhost
 0.0.0.0 www.olx-m.pl
 0.0.0.0 www.olx-managment.pl
 0.0.0.0 www.olx-messenger.com
+0.0.0.0 www.olx-n.pl
+0.0.0.0 www.olx-oferta.com
 0.0.0.0 www.olx-oferta.eu
 0.0.0.0 www.olx-oferta.ink
 0.0.0.0 www.olx-oferta.pl
@@ -26390,6 +26448,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.olx-pay.org
 0.0.0.0 www.olx-payments.pl
 0.0.0.0 www.olx-pays.pl
+0.0.0.0 www.olx-pay-in.pl
 0.0.0.0 www.olx-pl.cc
 0.0.0.0 www.olx-pl.dostawa.pro
 0.0.0.0 www.olx-pl.eu
@@ -26401,6 +26460,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.olx-pl.online
 0.0.0.0 www.olx-pl.org
 0.0.0.0 www.olx-pl.pl
+0.0.0.0 www.olx-pl.pro
 0.0.0.0 www.olx-pl.pw
 0.0.0.0 www.olx-pl.su
 0.0.0.0 www.olx-pl-oferta.eu
@@ -26419,8 +26479,10 @@ fe80::1%lo0 localhost
 0.0.0.0 www.olx.3d-security.info
 0.0.0.0 www.olx.epay-trade.ru
 0.0.0.0 www.olx.informacja-pl.info
+0.0.0.0 www.olx.merch-pays.ru
 0.0.0.0 www.olx.oplata-is.com
 0.0.0.0 www.olx.payment-otrymac.info
+0.0.0.0 www.olx.payment-otrymac.online
 0.0.0.0 www.olx.pl-id202011-order.site
 0.0.0.0 www.olx.pl-id2046801-order.ru
 0.0.0.0 www.olx.pl-oferta.com
@@ -26488,6 +26550,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.paczkomat-platnosc.in.net
 0.0.0.0 www.paczkomat-pobranie.in.net
 0.0.0.0 www.paiementnazwa-pl-ab448b9f.christen-online.at
+0.0.0.0 www.pandora-konkurs.com.pl
 0.0.0.0 www.pandora-konkurs.pl
 0.0.0.0 www.parcel.gjbx346t33h972c.20design.org
 0.0.0.0 www.parcel.qzyz3dzq80rzbl3.amin-sharifi.ir
@@ -26632,6 +26695,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.przejrzyj-fotki.eu
 0.0.0.0 www.przeplyw-danych.eu
 0.0.0.0 www.przesyika-pl.host
+0.0.0.0 www.przesylka-olx.pl
 0.0.0.0 www.przesylki-olx.pl
 0.0.0.0 www.przezwyciezenie-leku.eu
 0.0.0.0 www.przysluga-ludziom.eu
@@ -26666,6 +26730,7 @@ fe80::1%lo0 localhost
 0.0.0.0 www.rocket-it.com.au
 0.0.0.0 www.rossmann-rozdawanie.eu
 0.0.0.0 www.rotary-wloclawek.pl
+0.0.0.0 www.rozgrywanie-konkursu.eu
 0.0.0.0 www.rozgrywka-oceniaj.eu
 0.0.0.0 www.run-germany.com
 0.0.0.0 www.rywalizacja-ludzi.eu
@@ -45336,9 +45401,9 @@ fe80::1%lo0 localhost
 
 # ----
 
-# last updated:   Thu, 19 Nov 2020 11:24:03 GMT
+# last updated:   Wed, 25 Nov 2020 08:00:48 GMT
 
-# entries:        3561
+# entries:        3562
 
 # format:         hosts (hosts -- in hosts file format)
 
@@ -45354,7 +45419,7 @@ fe80::1%lo0 localhost
 
 #
 
-# start date:    Wed, 29 Nov 2000 00:00:00
+# start date:    Thu, 30 Nov 2000 00:00:00
 
 0.0.0.0 1-1ads.com
 0.0.0.0 101com.com
@@ -47467,6 +47532,7 @@ fe80::1%lo0 localhost
 0.0.0.0 reflectivereward.com
 0.0.0.0 reforge.in
 0.0.0.0 regnow.com
+0.0.0.0 regularplants.com
 0.0.0.0 reklam.rfsl.se
 0.0.0.0 reklama.mironet.cz
 0.0.0.0 reklama.reflektor.cz
