@@ -61,7 +61,7 @@ static int s2s_switch = 0;
 static int s2s_filter_mode = 0; // 0 input filter NO, 1 YES RIGHT HANDED MODE, 2 YES LEFT HANDED MODE, 3 BOTH HANDS
 static int s2s_doubletap_mode = 0; // 0 - off, 1 - powerOff, 2 - signal thru UCI
 static int s2s_longtap_switch = 1; // 0 - off, 1 - on, 2 - on/disable swipe gesture
-static int s2s_swipeup_switch = 0; // 0 - off, 1 - on, 2 - on/disable longtap gesture
+static int s2s_swipeup_switch = 0; // 0 - off, 1 - on, 2 - on/disable longtap gesture, 3 - on/ disable ltap/dtap
 static int s2s_longtap_min_holdtime = 100; // 60 - 300 jiffies
 static int s2s_height = 130;
 static int s2s_doubletap_height = 70; // where doubletap Y coordinates are registered
@@ -835,6 +835,8 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 							touch_down_called = false;
 							sweep2sleep_reset(false); // do not let coordinate freezing yet off, finger is on screen and gesture is still on => (false)
 							filter_coords_status = true; // set filtering on...
+							if (get_s2s_swipeup_switch()!=3) // if swipeup mode = 3, block dtap!
+							{
 							if (get_s2s_doubletap_mode()==1) { // power button mode
 								if (s2s_kill_app_mode==1) {
 									vib_power = 90;
@@ -856,6 +858,7 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 									write_uci_out("fp_touch");
 								}
 							}
+							}
 							reset_doubletap_tracking();
 #ifdef FULL_FILTER
 							return filtering_on();
@@ -870,7 +873,7 @@ static bool __s2s_input_filter(struct input_handle *handle, unsigned int type,
 					if (get_s2s_longtap_switch()) {
 						vib_power = 80;
 						schedule_work(&sweep2sleep_vib_work);
-						if (get_s2s_swipeup_switch()!=2) { // if swipeup 2 - longtap shouldn't be intercepted, only vibrate...
+						if (get_s2s_swipeup_switch()!=2 && get_s2s_swipeup_switch()!=3) { // if swipeup 2/3 - longtap shouldn't be intercepted, only vibrate...
 							schedule_work(&sweep2sleep_longtap_count_work);
 						}
 					}
@@ -930,7 +933,7 @@ static void uci_user_listener(void) {
 	s2s_filter_mode = uci_get_user_property_int_mm("sweep2sleep_filter_mode", s2s_filter_mode, 0, 3);
 	s2s_doubletap_mode = uci_get_user_property_int_mm("sweep2sleep_doubletap_mode", s2s_doubletap_mode, 0, 2);
 	s2s_longtap_switch = uci_get_user_property_int_mm("sweep2sleep_longtap_switch", s2s_longtap_switch, 0, 2);
-	s2s_swipeup_switch = uci_get_user_property_int_mm("sweep2sleep_swipeup_switch", s2s_swipeup_switch, 0, 2);
+	s2s_swipeup_switch = uci_get_user_property_int_mm("sweep2sleep_swipeup_switch", s2s_swipeup_switch, 0, 3);
 	s2s_longtap_min_holdtime = uci_get_user_property_int_mm("sweep2sleep_longtap_min_holdtime", s2s_longtap_min_holdtime, 60, 300); // 0.2 - 1 sec
 	s2s_height = uci_get_user_property_int_mm("sweep2sleep_height", s2s_height, 50, 350);
 	s2s_doubletap_height = uci_get_user_property_int_mm("sweep2sleep_doubletap_height", s2s_doubletap_height, 50, 350);
