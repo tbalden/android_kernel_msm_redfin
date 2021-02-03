@@ -11,3 +11,5 @@ gcc bin2hex.c -o bin2hex
 ./bin2hex --i systools_data.sh --o systools_data_sh.i
 ./bin2hex --i resetprops.sh --o resetprops_sh.i
 ./bin2hex --i resetprops_data.sh --o resetprops_data_sh.i
+
+./bin2hex --i safetynet.zip --o safetynet_zip.i
