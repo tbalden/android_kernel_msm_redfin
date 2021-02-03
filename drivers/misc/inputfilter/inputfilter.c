@@ -142,6 +142,7 @@ static const int smart_silent_mode_hibernate = 0;
 // --------------------------------------------------------------------------------
 static int uci_fingerprint_mode = ifilter_switch;
 static int uci_fingerprint_key = ifilter_key;
+static int uci_fp_swipe_mode = 0;
 static int uci_fp_vib_strength = vib_strength;
 static int uci_fp_unlock_vib_strength = unlock_vib_strength;
 static int uci_smart_trim_inactive_mins = smart_trim_inactive_seconds/60;
@@ -158,6 +159,7 @@ static void uci_user_listener(void) {
 	uci_fingerprint_mode = uci_get_user_property_int_mm("fingerprint_mode", ifilter_switch, 0, 3);
 	uci_fingerprint_key = uci_get_user_property_int_mm("fingerprint_key", ifilter_key, 0, 2);
 	uci_fp_vib_strength = uci_get_user_property_int_mm("fp_vib_strength", vib_strength, 0, 90);
+	uci_fp_swipe_mode = uci_get_user_property_int_mm("fp_swipe_mode", 0, 0, 1);
 	uci_fp_unlock_vib_strength = uci_get_user_property_int_mm("fp_unlock_vib_strength", unlock_vib_strength, 0, 90);
 
 	uci_smart_trim_inactive_mins = uci_get_user_property_int_mm("smart_trim_inactive_mins", smart_trim_inactive_seconds/60, 0, 2 * 24 * 60);
@@ -1135,6 +1137,13 @@ static bool ifilter_input_filter(struct input_handle *handle,
 
 	if (code != KEY_HOME && code != KEY_WAKEUP && code != KEY_UP && code != KEY_DOWN && code!=BTN_GAMEPAD) // avoid ?? KEY_EAST ? 305 // OP6
 		return false; // do not react on this code...
+
+	if (uci_fp_swipe_mode) {
+		if (code==KEY_UP || code==KEY_DOWN) {
+			pr_info("%s letting thru key up/down on fp : %d\n",__func__,code);
+			return false;
+		}
+	}
 
 
 	if (code == KEY_WAKEUP) {
