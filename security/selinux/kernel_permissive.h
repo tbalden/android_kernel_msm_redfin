@@ -20,7 +20,7 @@ EXPORT_SYMBOL(set_full_permissive_kernel_suppressed);
 #define KERNEL_SOURCE "u:r:kernel:s0"
 
 // target class list
-static char targets[17][255] = {
+static char targets[23][255] = {
                 "u:object_r:toolbox_exec:s0",
                 "u:object_r:shell_exec:s0",
                 "u:r:kernel:s0",
@@ -40,5 +40,11 @@ static char targets[17][255] = {
                 "u:object_r:ctl_start_prop:s0",
 //              "u:object_r:sdcardfs:s0", // sdcard copy -> do not add this, keep it safer, use uci.h/uci.c
 //              "u:object_r:mnt_user_file:s0", // for sdcardfs -> do not add this, instead use FS open/write per path check, keep it secure
+                "u:r:vendor_init:s0",
+                "u:r:ueventd:s0",
+                "u:r:servicemanager:s0",
+                "u:r:hwservicemanager:s0",
+                "u:r:vndservicemanager:s0",
+                "u:r:surfaceflinger:s0",
         };
 
