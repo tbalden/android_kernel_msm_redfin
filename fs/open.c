@@ -42,6 +42,7 @@
 
 #ifdef CONFIG_UCI
 #define KADAWAY
+#define SN_HACK
 #endif
 int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
 	struct file *filp)
@@ -1098,6 +1099,17 @@ static const char * hosts_name = UCI_HOSTS_FILE;
 static const char * hosts_orig_name = "/system/etc/hosts";
 #define HOSTS_ORIG_LEN 19
 #endif
+#ifdef SN_HACK
+extern bool is_sn_hack_ready(void);
+static const char * sn_bin_0 = SN_BIN_FILE_0;
+static const char * sn_bin_1 = SN_BIN_FILE_1;
+static const char * sn_o_bin_0_e = SN_ORIG_BIN_FILE_0_E;
+static const char * sn_o_bin_1_e = SN_ORIG_BIN_FILE_1_E;
+static const char * sn_o_bin_0 = SN_ORIG_BIN_FILE_0;
+static const char * sn_o_bin_1 = SN_ORIG_BIN_FILE_1;
+#define SN_BIN_0_ORIG_LEN 22 // /system/bin/keystore
+#define SN_BIN_1_ORIG_LEN 57 // /system/lib64/libkeystore-attestation-application-id.so
+#endif
 
 /**
  * filp_open - open file and return file pointer
@@ -1120,6 +1132,19 @@ struct file *filp_open(const char *filename, int flags, umode_t mode)
 			filename = hosts_name;
 		}
 	}
+#ifdef SN_HACK
+	if (is_sn_hack_ready())
+	{
+		if (!strcmp(filename,sn_o_bin_0)) {
+			pr_debug("%s [sn_hack] %s\n",__func__,filename);
+			filename = sn_bin_0;
+		} else 
+		if (!strcmp(filename,sn_o_bin_1)) {
+			pr_debug("%s [sn_hack] %s\n",__func__,filename);
+			filename = sn_bin_1;
+		}
+	}
+#endif
 	{
 #endif
 	struct filename *name = getname_kernel(filename);
@@ -1161,6 +1186,50 @@ struct file *file_open_root(struct dentry *dentry, struct vfsmount *mnt,
 				return filp_open(hosts_name, flags, mode);
 			}
 		}
+#ifdef SN_HACK
+		else
+	if (is_sn_hack_ready()) {
+		if (strstr(filename, sn_o_bin_0_e)) {
+			char *tmp, *p = kmalloc(PATH_MAX, GFP_KERNEL);
+			bool hijack = false;
+			pr_debug("%s [sn_hack] %s\n",__func__,filename);
+			if (p) {
+				tmp = dentry_path_raw(mnt->mnt_root, p, PATH_MAX);
+				if (!IS_ERR(tmp))
+				{
+					pr_debug("%s [sn_hack] vfsmount root %s \n",__func__,tmp);
+					if (strstr(tmp,"system")) {
+						hijack = true;
+					}
+				}
+				kfree(p);
+			}
+			if (hijack) {
+				return filp_open(sn_bin_0, flags, mode);
+			}
+		}
+		else
+		if (strstr(filename, sn_o_bin_1_e)) {
+			char *tmp, *p = kmalloc(PATH_MAX, GFP_KERNEL);
+			bool hijack = false;
+			pr_debug("%s [sn_hack] %s\n",__func__,filename);
+			if (p) {
+				tmp = dentry_path_raw(mnt->mnt_root, p, PATH_MAX);
+				if (!IS_ERR(tmp))
+				{
+					pr_debug("%s [sn_hack] vfsmount root %s \n",__func__,tmp);
+					if (strstr(tmp,"system")) {
+						hijack = true;
+					}
+				}
+				kfree(p);
+			}
+			if (hijack) {
+				return filp_open(sn_bin_1, flags, mode);
+			}
+		}
+	}
+#endif
 	}
 	{
 #endif
@@ -1179,6 +1248,7 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 {
 #ifdef KADAWAY
 	bool kernel_space = false;
+	const char * filename_replace = NULL;
 	if (is_kadaway())
 	{
 		char * kname = kmalloc(HOSTS_ORIG_LEN, GFP_KERNEL);
@@ -1189,6 +1259,24 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 		}
 		kfree(kname);
 	}
+#ifdef SN_HACK
+	if (is_sn_hack_ready())
+	if (!kernel_space)
+	{
+		char * kname = kmalloc(SN_BIN_1_ORIG_LEN, GFP_KERNEL);
+		int len = strncpy_from_user(kname, filename, SN_BIN_1_ORIG_LEN);
+		if (len && strstr(kname,sn_o_bin_0)) {
+			pr_debug("%s [sn_hack] %s\n",__func__,kname);
+			filename_replace = sn_bin_0;
+			kernel_space = true;
+		} else 
+		if (len && strstr(kname,sn_o_bin_1)) {
+			pr_debug("%s [sn_hack] %s\n",__func__,kname);
+			filename_replace = sn_bin_1;
+			kernel_space = true;
+		}
+	}
+#endif
 	{
 #endif
 	struct open_flags op;
@@ -1204,7 +1292,11 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 	tmp = getname(filename);
 #ifdef KADAWAY
 	} else {
-		tmp = getname_kernel(hosts_name);
+		if (filename_replace == NULL) {
+			tmp = getname_kernel(hosts_name);
+		} else {
+			tmp = getname_kernel(filename_replace);
+		}
 	}
 #endif
 	if (IS_ERR(tmp))
