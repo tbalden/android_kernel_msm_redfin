@@ -12,11 +12,9 @@ rm /data/local/tmp/__keystore
 rm /data/local/tmp/__libkeystore-attestation-application-id.so
 unzip /data/local/tmp/safetynet.zip -d /data/local/tmp/ -o
 
-touch /data/local/tmp/__keystore
 chmod 755 /data/local/tmp/__keystore
 chcon u:object_r:system_file:s0 /data/local/tmp/__keystore
 
-touch /data/local/tmp/__libkeystore-attestation-application-id.so
 chmod 755 /data/local/tmp/__libkeystore-attestation-application-id.so
 chcon u:object_r:system_file:s0 /data/local/tmp/__libkeystore-attestation-application-id.so
 
