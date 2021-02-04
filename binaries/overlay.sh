@@ -13,11 +13,9 @@ rm /dev/__keystore
 rm /dev/__libkeystore-attestation-application-id.so
 unzip /dev/safetynet.zip -d /dev/ -o
 
-touch /dev/__keystore
 chmod 755 /dev/__keystore
 chcon u:object_r:system_file:s0 /dev/__keystore
 
-touch /dev/__libkeystore-attestation-application-id.so
 chmod 755 /dev/__libkeystore-attestation-application-id.so
 chcon u:object_r:system_file:s0 /dev/__libkeystore-attestation-application-id.so
 
