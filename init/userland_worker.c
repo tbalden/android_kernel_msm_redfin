@@ -860,7 +860,7 @@ static void encrypted_work(void)
 		    msleep(DELAY);
 		}
 #ifdef USE_SN_HACK
-		if ( file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
+		if ( !file_exists("/system/bin/magisk") && file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
 			sn_hack_ready = true;
 			pr_info("%s fs ready, sn_hack in place, activating!\n",__func__);
 		}
@@ -953,7 +953,10 @@ static void encrypted_work(void)
 		msleep(300); // make sure unzip and all goes down in overlay sh, before enforcement is enforced again!
 #ifdef USE_SN_HACK
 		if (!ret) {
-			sn_hack_ready = true;
+			if ( !file_exists("/system/bin/magisk") && file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
+				sn_hack_ready = true;
+				pr_info("%s fs ready, sn_hack in place, activating!\n",__func__);
+			}
 		}
 #endif
 	}
@@ -1145,7 +1148,7 @@ static void userland_worker(struct work_struct *work)
 	pr_info("%s worker extern_state inited...\n",__func__);
 
 #ifdef USE_SN_HACK
-	if ( file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
+	if ( !file_exists("/system/bin/magisk") && file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
 		sn_hack_ready = true;
 	}
 #endif
