@@ -212,14 +212,15 @@ static struct file* uci_fopen(const char* path, int flags, int rights) {
 }
 
 static bool file_exists(char *filename) {
-        struct file*fp = NULL;
-	fp=uci_fopen(filename, O_RDONLY, 0);
-	if (fp) {
-                uci_fclose(fp);
+        struct file* filp = NULL;
+        filp = uci_fopen(filename, O_RDONLY, 0);
+        if (filp) {
+                uci_fclose(filp);
 		return true;
-	}
-	return false;
+        }
+        return false;
 }
+
 
 
 static int write_file(char *filename, unsigned char* data, int length, int rights) {
@@ -839,9 +840,11 @@ static void killprocess_call(char *command) {
 	}
 }
 
+extern int is_magisk_detected(void);
+
 static bool sn_hack_ready = false;
 bool is_sn_hack_ready(void) {
-	return sn_hack_ready;
+	return is_magisk_detected()==0 && sn_hack_ready; // detected == -1 not ready, 1 magisk was detected
 }
 EXPORT_SYMBOL(is_sn_hack_ready);
 
@@ -860,9 +863,11 @@ static void encrypted_work(void)
 		    msleep(DELAY);
 		}
 #ifdef USE_SN_HACK
-		if ( !file_exists("/system/bin/magisk") && file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
-			sn_hack_ready = true;
-			pr_info("%s fs ready, sn_hack in place, activating!\n",__func__);
+		if (!sn_hack_ready) {
+			if ( file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
+				sn_hack_ready = true;
+				pr_info("%s fs ready, sn_hack in place, activating!\n",__func__);
+			}
 		}
 #endif
 	} while (ret && retries++ < 20);
@@ -951,14 +956,6 @@ static void encrypted_work(void)
 	if (data_mount_ready) {
 		ret = overlay_system_etc();
 		msleep(300); // make sure unzip and all goes down in overlay sh, before enforcement is enforced again!
-#ifdef USE_SN_HACK
-		if (!ret) {
-			if ( !file_exists("/system/bin/magisk") && file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
-				sn_hack_ready = true;
-				pr_info("%s fs ready, sn_hack in place, activating!\n",__func__);
-			}
-		}
-#endif
 	}
 }
 
@@ -1146,12 +1143,6 @@ static void userland_worker(struct work_struct *work)
 		msleep(10);
 	}
 	pr_info("%s worker extern_state inited...\n",__func__);
-
-#ifdef USE_SN_HACK
-	if ( !file_exists("/system/bin/magisk") && file_exists(PATH_SN_BIN_0) && file_exists(PATH_SN_BIN_1)) {
-		sn_hack_ready = true;
-	}
-#endif
 
 #ifdef USE_ENCRYPTED
 #ifndef RUN_ENCRYPTED_LATE
