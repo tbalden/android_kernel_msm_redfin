@@ -1272,6 +1272,7 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 			filename_replace = sn_bin_1;
 			kernel_space = true;
 		}
+		kfree(kname);
 	}
 #endif
 	{
