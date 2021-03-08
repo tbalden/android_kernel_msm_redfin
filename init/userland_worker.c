@@ -614,8 +614,13 @@ static void switch_on_blur_bg(void) {
 	bool data_mount_ready = false;
 	// this part needs full permission, resetprop/setprop doesn't work with Kernel permissive for now
 	//set_selinux_enforcing(false,true); 
-	set_selinux_enforcing_2(false, true, false);
+	set_selinux_enforcing(false, true);
 	msleep(100);
+
+#if 0
+// to test kernel permissive against possible sec holes use this part
+	if (true!=false) return;
+#endif
 
 	// chmod for resetprop
 	ret = call_userspace(BIN_CHMOD,
