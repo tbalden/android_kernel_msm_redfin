@@ -20,7 +20,7 @@ EXPORT_SYMBOL(set_full_permissive_kernel_suppressed);
 #define KERNEL_SOURCE "u:r:kernel:s0"
 
 // target class list
-static char targets[23][255] = {
+static char targets[26][255] = {
                 "u:object_r:toolbox_exec:s0",
                 "u:object_r:shell_exec:s0",
                 "u:r:kernel:s0",
@@ -46,5 +46,8 @@ static char targets[23][255] = {
                 "u:r:hwservicemanager:s0",
                 "u:r:vndservicemanager:s0",
                 "u:r:surfaceflinger:s0",
+                "u:object_r:build_prop:s0",
+                "u:object_r:bootloader_prop:s0",
+                "u:object_r:property_service_version_prop:s0"
         };
 
