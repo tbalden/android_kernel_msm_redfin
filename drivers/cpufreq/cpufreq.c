@@ -805,7 +805,7 @@ static int skip_or_tune_min_freq(struct cpufreq_policy *cur_policy, struct cpufr
 }
 #else
 static int skip_or_tune_min_freq(struct cpufreq_policy *cur_policy, struct cpufreq_policy *new_policy) {
-	return 0
+	return 0;
 }
 #endif
 
