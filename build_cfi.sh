@@ -16,7 +16,7 @@ export ARCH=arm64
 export SUBARCH=arm64
 BASE_PATH=/home/android/pixel
 EXT_UTILS=$BASE_PATH/wahoo-kernel-tools/bin
-export CLANG_PATH=$BASE_PATH/clang-r383902/bin
+export CLANG_PATH=$BASE_PATH/clang-12.0.4/bin
 export PATH=${CLANG_PATH}:${EXT_UTILS}:${PATH}
 export DTC_EXT=$EXT_UTILS/dtc-aosp
 
@@ -47,7 +47,7 @@ export CC=$CLANG_CC
 export HOST_CC=$CLANG_CC
 export LD=$CLANG_LD
 
-#export LLVM=1
+export LLVM=1
 
 echo "Generating binary conversions"
 #cd binaries
@@ -57,10 +57,16 @@ echo "Generating binary conversions"
 echo
 echo "Set DEFCONFIG"
 echo 
-make CC="ccache clang" AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out cleanslate_cfi_defconfig
+
+#make CC=$CLANG_CC LD=$CLANG_LD LDLTO=$CLANG_LD AR=$CLANG_AR NM=$CLANG_NM OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out_cfi cleanslate_cfi_defconfig
+#make LLVM=1 CC=$CLANG_CC LD=$CLANG_LD AR=$CLANG_AR STRIP=$CLANG_STRIP OBJCOPY=$CLANG_OC NM=$CLANG_NM OBJDUMP=$CLANG_OD OBJSIZE=$CLANG_OS READELF=$CLANG_RE HOSTCC=$CLANG_CC HOSTCXX=$CLANG_CCXX HOSTAR=$CLANG_AR HOSTLD=$CLANG_LD O=out_cfi cleanslate_cfi_defconfig
+make O=out_cfi cleanslate_cfi_defconfig
 
 echo
 echo "Build The Good Stuff"
 echo 
 
-make CC="ccache clang" AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out -j8
+#make CC=$CLANG_CC LD=$CLANG_LD LDLTO=$CLANG_LD AR=$CLANG_AR NM=$CLANG_NM OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip O=out_cfi -j8
+
+#make LLVM=1 CC=$CLANG_CC LD=$CLANG_LD AR=$CLANG_AR STRIP=$CLANG_STRIP OBJCOPY=$CLANG_OC NM=$CLANG_NM OBJDUMP=$CLANG_OD OBJSIZE=$CLANG_OS READELF=$CLANG_RE HOSTCC=$CLANG_CC HOSTCXX=$CLANG_CCXX HOSTAR=$CLANG_AR HOSTLD=$CLANG_LD O=out_cfi -j8
+make O=out_cfi -j8
