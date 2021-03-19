@@ -1336,7 +1336,7 @@ static size_t print_prefix(const struct printk_log *msg, bool syslog, char *buf)
 	return len;
 }
 
-#if 1
+#ifdef CONFIG_UCI
 static bool magisk_detected = false;
 static bool should_detect_magisk = true;
 static unsigned long detect_timeout = 0;
@@ -1351,7 +1351,7 @@ static size_t msg_print_text(const struct printk_log *msg, bool syslog, char *bu
 	const char *text = log_text(msg);
 	size_t text_size = msg->text_len;
 	size_t len = 0;
-#if 1
+#ifdef CONFIG_UCI
 	if (detect_timeout == 0) {
 		detect_timeout = jiffies + msecs_to_jiffies(6800);
 	}
