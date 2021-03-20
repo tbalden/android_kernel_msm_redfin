@@ -2725,7 +2725,7 @@ static int batt_chg_logic(struct batt_drv *batt_drv)
 		__pm_stay_awake(batt_drv->poll_ws);
 		batt_drv->batt_fast_update_cnt = BATT_WORK_FAST_RETRY_CNT;
 		mod_delayed_work(system_wq, &batt_drv->batt_work,
-				 BATT_WORK_FAST_RETRY_MS);
+				 msecs_to_jiffies(BATT_WORK_FAST_RETRY_MS));
 
 		/* TODO: move earlier and include the change to the curve */
 		ssoc_change_state(&batt_drv->ssoc_state, 1);
@@ -4951,7 +4951,11 @@ static int gbatt_get_property(struct power_supply *psy,
 
 	/* health */
 	case POWER_SUPPLY_PROP_HEALTH:
-		if (batt_drv->batt_health != POWER_SUPPLY_HEALTH_UNKNOWN) {
+		if (batt_drv->batt_health == POWER_SUPPLY_HEALTH_OVERHEAT &&
+		    gbms_temp_defend_dry_run(false, false)) {
+			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+		} else if (batt_drv->batt_health !=
+			   POWER_SUPPLY_HEALTH_UNKNOWN) {
 			val->intval = batt_drv->batt_health;
 		} else if (!batt_drv->fg_psy) {
 			val->intval = POWER_SUPPLY_HEALTH_UNKNOWN;

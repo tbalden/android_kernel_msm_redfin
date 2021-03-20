@@ -101,6 +101,8 @@
 #define PD_WA_OF_CDEV_NAME "google,charger_pd_5v"
 #define PD_WA_CDEV_NAME "pd_wa"
 
+#define THERM_PD_VOLTAGE_MAX 4350
+
 enum tcpm_psy_online_states {
 	TCPM_PSY_OFFLINE = 0,
 	TCPM_PSY_FIXED_ONLINE,
@@ -233,6 +235,7 @@ struct chg_drv {
 	/* */
 	struct chg_thermal_device thermal_devices[CHG_TERMAL_DEVICES_COUNT];
 	bool therm_wlc_override_fcc;
+	int pd_wa_state;
 
 	/* */
 	u32 cv_update_interval;
@@ -418,6 +421,15 @@ static inline int chg_reset_state(struct chg_drv *chg_drv)
 		chg_reset_termination_data(chg_drv);
 
 	vote(chg_drv->msc_force_5v_votable, MSC_CHG_FULL_VOTER, false, 0);
+
+	/* according to thermal cooling device to set voter when it has been
+	 * postponed.
+	 */
+	if (chg_drv->pd_wa_state != -1) {
+		vote(chg_drv->msc_force_5v_votable, THERMAL_DAEMON_VOTER,
+		     !!chg_drv->pd_wa_state, 0);
+		chg_drv->pd_wa_state = -1;
+	}
 
 	if (chg_drv->chg_term.usb_5v == 1)
 		chg_drv->chg_term.usb_5v = 0;
@@ -1481,9 +1493,8 @@ static int bd_batt_set_state(struct chg_drv *chg_drv, bool hot, int soc)
 	const bool freeze = soc != -1;
 	int ret = 0; /* LOOK! */
 
-	/* do not change soc/health when dry run */
-	if (chg_drv->bd_state.bd_temp_dry_run)
-		return ret;
+	/* update temp-defend dry run */
+	gbms_temp_defend_dry_run(true, chg_drv->bd_state.bd_temp_dry_run);
 
 	/*
 	 * OVERHEAT changes handling of writes to POWER_SUPPLY_PROP_CAPACITY.
@@ -1940,6 +1951,21 @@ update_charger:
 				      0);
 	}
 
+	/* according to thermal cooling device to set voter when it has been
+	 * postponed.
+	 */
+	if (chg_drv->pd_wa_state != -1) {
+		int vbatt;
+
+		vbatt = GPSY_GET_PROP(bat_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW) /
+			1000;
+		if (vbatt <= THERM_PD_VOLTAGE_MAX) {
+			vote(chg_drv->msc_force_5v_votable,
+			     THERMAL_DAEMON_VOTER, !!chg_drv->pd_wa_state, 0);
+			chg_drv->pd_wa_state = -1;
+		}
+	}
+
 	/* WAR: battery overcharge on a weak adapter */
 	if (chg_drv->chg_term.enable && chg_done) {
 		int soc;
@@ -1962,7 +1988,7 @@ update_charger:
 
 rerun_error:
 	success = schedule_delayed_work(&chg_drv->chg_work,
-					CHG_WORK_ERROR_RETRY_MS);
+				msecs_to_jiffies(CHG_WORK_ERROR_RETRY_MS));
 
 	/* no need to reschedule the pending after an error
 	 * NOTE: rc is the return code from battery properties
@@ -3752,7 +3778,6 @@ static int chg_get_thermal_pd_wa(struct thermal_cooling_device *tcd,
 	return 0;
 }
 
-#define THERM_PD_VOLTAGE_MAX 4350
 static int chg_set_thermal_pd_wa(struct thermal_cooling_device *tcd,
 				 unsigned long state)
 {
@@ -3762,17 +3787,21 @@ static int chg_set_thermal_pd_wa(struct thermal_cooling_device *tcd,
 	struct power_supply *bat_psy = chg_drv->bat_psy;
 	int vbatt = 0;
 
-	vbatt = (GPSY_GET_PROP(bat_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW) / 1000);
-
-	if (vbatt > THERM_PD_VOLTAGE_MAX) {
-		pr_info("MSC_THERM_PD abort, state=%d vbatt=%d\n", !!state,
-			vbatt);
-		return 0;
+	/* postpone PD 5V WA and execute the WA when charger is removed
+	 * or vbatt is lower than THERM_PD_VOLTAGE_MAX.
+	 */
+	vbatt = GPSY_GET_PROP(bat_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW) / 1000;
+	if (vbatt > THERM_PD_VOLTAGE_MAX && chg_drv->stop_charging == 0) {
+		chg_drv->pd_wa_state = (int)state;
+		pr_info("MSC_THERM_PD abort, vbatt=%d\n", vbatt);
+	} else {
+		vote(chg_drv->msc_force_5v_votable, THERMAL_DAEMON_VOTER,
+		     !!state, 0);
 	}
 
-	vote(chg_drv->msc_force_5v_votable, THERMAL_DAEMON_VOTER, !!state, 0);
 	tdev->pd_wa_active = !!state;
-	pr_info("MSC_THERM_PD state=%d\n", tdev->pd_wa_active);
+	pr_info("MSC_THERM_PD active=%d state=%d\n", tdev->pd_wa_active,
+		chg_drv->pd_wa_state);
 
 	return 0;
 }
@@ -3994,6 +4023,9 @@ static void google_charger_init_work(struct work_struct *work)
 	/* reset override charging parameters */
 	chg_drv->user_fv_uv = -1;
 	chg_drv->user_cc_max = -1;
+
+	/* reset pd_wa_state */
+	chg_drv->pd_wa_state = -1;
 
 	chg_drv->psy_nb.notifier_call = chg_psy_changed;
 	ret = power_supply_reg_notifier(&chg_drv->psy_nb);
