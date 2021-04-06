@@ -16,8 +16,8 @@ export ARCH=arm64
 export SUBARCH=arm64
 BASE_PATH=/home/android/pixel
 EXT_UTILS=$BASE_PATH/wahoo-kernel-tools/bin
-export CLANG_PATH_LIB=$BASE_PATH/clang-11/lib64
-export CLANG_PATH=$BASE_PATH/clang-11/bin
+export CLANG_PATH_LIB=$BASE_PATH/clang-12/lib64
+export CLANG_PATH=$BASE_PATH/clang-12/bin
 export PATH=${CLANG_PATH}:${EXT_UTILS}:${PATH}
 export DTC_EXT=$EXT_UTILS/dtc-aosp
 
