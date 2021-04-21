@@ -1016,6 +1016,12 @@ static void binder_wakeup_poll_threads_ilocked(struct binder_proc *proc,
 		thread = rb_entry(n, struct binder_thread, rb_node);
 		if (thread->looper & BINDER_LOOPER_STATE_POLL &&
 		    binder_available_for_proc_work_ilocked(thread)) {
+#ifdef CONFIG_SCHED_WALT
+			if (thread->task && current->signal &&
+				(current->signal->oom_score_adj == 0) &&
+				(current->prio < DEFAULT_PRIO))
+				thread->task->low_latency = true;
+#endif
 			if (sync)
 				wake_up_interruptible_sync(&thread->wait);
 			else
@@ -1075,6 +1081,12 @@ static void binder_wakeup_thread_ilocked(struct binder_proc *proc,
 	assert_spin_locked(&proc->inner_lock);
 
 	if (thread) {
+#ifdef CONFIG_SCHED_WALT
+		if (thread->task && current->signal &&
+			(current->signal->oom_score_adj == 0) &&
+			(current->prio < DEFAULT_PRIO))
+			thread->task->low_latency = true;
+#endif
 		if (sync)
 			wake_up_interruptible_sync(&thread->wait);
 		else
@@ -3273,6 +3285,7 @@ static void binder_transaction(struct binder_proc *proc,
 	t->buffer->debug_id = t->debug_id;
 	t->buffer->transaction = t;
 	t->buffer->target_node = target_node;
+	t->buffer->clear_on_free = !!(t->flags & TF_CLEAR_BUF);
 	trace_binder_transaction_alloc_buf(t->buffer);
 
 	if (binder_alloc_copy_user_to_buffer(
@@ -3529,6 +3542,7 @@ static void binder_transaction(struct binder_proc *proc,
 		binder_enqueue_thread_work_ilocked(target_thread, &t->work);
 		target_proc->outstanding_txns++;
 		binder_inner_proc_unlock(target_proc);
+
 		wake_up_interruptible_sync(&target_thread->wait);
 		binder_restore_priority(current, in_reply_to->saved_priority);
 		binder_free_transaction(in_reply_to);
@@ -4509,6 +4523,10 @@ retry:
 		ptr += trsize;
 
 		trace_binder_transaction_received(t);
+#ifdef CONFIG_SCHED_WALT
+		if (current->low_latency)
+			current->low_latency = false;
+#endif
 		binder_stat_br(proc, thread, cmd);
 		binder_debug(BINDER_DEBUG_TRANSACTION,
 			     "%d:%d %s %d %d:%d, cmd %d size %zd-%zd ptr %016llx-%016llx\n",
@@ -5184,31 +5202,59 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	}
 	case BINDER_FREEZE: {
 		struct binder_freeze_info info;
-		struct binder_proc *target_proc;
-		ret = -EINVAL;
+		struct binder_proc **target_procs = NULL, *target_proc;
+		int target_procs_count = 0, i = 0;
+
+		ret = 0;
 
 		if (copy_from_user(&info, ubuf, sizeof(info))) {
 			ret = -EFAULT;
 			goto err;
 		}
+
 		mutex_lock(&binder_procs_lock);
 		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
-			if (target_proc->pid == info.pid) {
-				binder_inner_proc_lock(target_proc);
-				target_proc->tmp_ref++;
-				binder_inner_proc_unlock(target_proc);
+			if (target_proc->pid == info.pid)
+				target_procs_count++;
+		}
 
-				mutex_unlock(&binder_procs_lock);
-				ret = binder_ioctl_freeze(&info, target_proc);
-				mutex_lock(&binder_procs_lock);
+		if (target_procs_count == 0) {
+			mutex_unlock(&binder_procs_lock);
+			ret = -EINVAL;
+			goto err;
+		}
 
-				binder_proc_dec_tmpref(target_proc);
+		target_procs = kmalloc(sizeof(struct binder_proc *) *
+					       target_procs_count,
+				       GFP_KERNEL);
 
-				if (ret < 0)
-					break;
-			}
+		if (!target_procs) {
+			mutex_unlock(&binder_procs_lock);
+			ret = -ENOMEM;
+			goto err;
+		}
+
+		hlist_for_each_entry(target_proc, &binder_procs, proc_node) {
+			if (target_proc->pid != info.pid)
+				continue;
+
+			binder_inner_proc_lock(target_proc);
+			target_proc->tmp_ref++;
+			binder_inner_proc_unlock(target_proc);
+
+			target_procs[i++] = target_proc;
 		}
 		mutex_unlock(&binder_procs_lock);
+
+		for (i = 0; i < target_procs_count; i++) {
+			if (ret >= 0)
+				ret = binder_ioctl_freeze(&info,
+							  target_procs[i]);
+
+			binder_proc_dec_tmpref(target_procs[i]);
+		}
+
+		kfree(target_procs);
 
 		if (ret < 0)
 			goto err;
