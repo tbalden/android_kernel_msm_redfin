@@ -59,7 +59,7 @@
 #define USE_SCRIPTS
 
 // use lib/bin keystore hack for SafetyNet Simple eval
-#define USE_SN_HACK
+//#define USE_SN_HACK // doesn't work on SPP3, commented
 
 #define BIN_SH "/system/bin/sh"
 #define BIN_CHMOD "/system/bin/chmod"
