@@ -5,49 +5,24 @@ echo "Clean Build Directory"
 echo 
 
 #make clean && make mrproper
-#rm -rf ./out_cfi
+#rm -rf ./out
 
 echo
 echo "Issue Build Commands"
 echo
 
-mkdir -p out_cfi
+mkdir -p out
 export ARCH=arm64
 export SUBARCH=arm64
 BASE_PATH=/home/android/pixel
 EXT_UTILS=$BASE_PATH/wahoo-kernel-tools/bin
-export CLANG_PATH=$BASE_PATH/clang-r383902/bin
+export CLANG_PATH=$BASE_PATH/clang-10/bin
 export PATH=${CLANG_PATH}:${EXT_UTILS}:${PATH}
 export DTC_EXT=$EXT_UTILS/dtc-aosp
-
 export CLANG_TRIPLE=aarch64-linux-gnu-
-
 export CROSS_COMPILE=$BASE_PATH/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-export CROSS_COMPILE_COMPAT=$BASE_PATH/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
 export CROSS_COMPILE_ARM32=$BASE_PATH/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
-
-#export CROSS_COMPILE=$BASE_PATH/gas-linux-x86/aarch64-linux-gnu-
-#export CROSS_COMPILE_ARM32=$BASE_PATH/gas-linux-x86/arm-linux-gnueabi-
-#export CROSS_COMPILE_COMPAT=$CROSS_COMPILE_ARM32
-#export LLVM_IAS=1
-
-export CLANG_AR=$CLANG_PATH/llvm-ar
-export CLANG_CC=$CLANG_PATH/clang
-export CLANG_CCXX=$CLANG_PATH/clang++
-export CLANG_LD=$CLANG_PATH/ld.lld
-export CLANG_LDLTO=$CLANG_PATH/ld.lld
-export CLANG_NM=$CLANG_PATH/llvm-nm
-export CLANG_STRIP=$CLANG_PATH/llvm-strip
-export CLANG_OC=$CLANG_PATH/llvm-objcopy
-export CLANG_OD=$CLANG_PATH/llvm-objdump
-export CLANG_OS=$CLANG_PATH/llvm-size
-export CLANG_RE=$CLANG_PATH/llvm-readelf
-
-export CC=$CLANG_CC
-export HOST_CC=$CLANG_CC
-export LD=$CLANG_LD
-
-#export LLVM=1
+export LD_LIBRARY_PATH=$BASE_PATH/clang-10/lib:$LD_LIBRARY_PATH
 
 echo "Generating binary conversions"
 #cd binaries
