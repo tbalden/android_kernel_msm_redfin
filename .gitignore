@@ -143,3 +143,4 @@ arch/arm64/boot/dts/vendor/
 techpack/
 
 out/
+out_cfi/
