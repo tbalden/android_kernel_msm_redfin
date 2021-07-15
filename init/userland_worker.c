@@ -51,15 +51,15 @@
 #define USE_RESET_PROPS
 #define RUN_RESET_PROPS_BEFORE_DECRYPT
 //#define RUN_RESET_PROPS_AFTER_DECRYPT
-//#define USE_LOCK_HIDE
-#define USE_PIXEL_PROP
+#define USE_LOCK_HIDE
+//#define USE_PIXEL_PROP
 
 #define USE_PACKED_HOSTS
 // define this if you can use scripts .sh files
 #define USE_SCRIPTS
 
 // use lib/bin keystore hack for SafetyNet Simple eval
-#define USE_SN_HACK
+#define USE_SN_HACK // don't use it on a11 .160 -> fails to start
 
 #define BIN_SH "/system/bin/sh"
 #define BIN_CHMOD "/system/bin/chmod"
@@ -711,6 +711,20 @@ static void run_resetprops(void) {
 		ret = call_userspace(BIN_RESETPROP, "ro.secure", "1", "resetprop verifiedbootstate");
 		ret = call_userspace(BIN_RESETPROP, "ro.boot.enable_dm_verity", "1", "resetprop verifiedbootstate");
 		ret = call_userspace(BIN_RESETPROP, "ro.boot.secboot", "enabled", "resetprop verifiedbootstate");
+		ret = call_userspace(BIN_RESETPROP, "ro.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 1");
+		ret = call_userspace(BIN_RESETPROP, "ro.product.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 2");
+		ret = call_userspace(BIN_RESETPROP, "ro.odm.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 3");
+		ret = call_userspace(BIN_RESETPROP, "ro.system.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 3");
+		ret = call_userspace(BIN_RESETPROP, "ro.system_ext.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 4");
+		ret = call_userspace(BIN_RESETPROP, "ro.vendor.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 5");
+		ret = call_userspace(BIN_RESETPROP, "ro.vendor_dlkm.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 6");
+		    // Replace FP to let SN pass Cts profile: original March: google/redfin/redfin:S/SPP1.210122.022/7158812:user/release-keys
+//ro.odm.build.fingerprint
+//ro.product.build.fingerprint
+//ro.system.build.fingerprint
+//ro.system_ext.build.fingerprint
+//ro.vendor.build.fingerprint
+//ro.vendor_dlkm.build.fingerprint
 #endif
 
 #if 0
@@ -960,7 +974,7 @@ static void encrypted_work(void)
 
 	if (data_mount_ready) {
 		ret = overlay_system_etc();
-		msleep(300); // make sure unzip and all goes down in overlay sh, before enforcement is enforced again!
+		msleep(1300); // make sure unzip and all goes down in overlay sh, before enforcement is enforced again!
 	}
 }
 
