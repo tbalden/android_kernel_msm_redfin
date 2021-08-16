@@ -84,3 +84,4 @@ obj-$(CONFIG_FPR_FPC)		+= fpr_FingerprintCard/
 obj-$(CONFIG_UCI)  += uci/
 obj-$(CONFIG_UCI_NOTIFICATIONS)  += notification/
 obj-y  += inputfilter/
+obj-y                           += qrc/
