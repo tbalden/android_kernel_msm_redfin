@@ -590,13 +590,13 @@ static void systools_call(char *command) {
 		if (current_ssid!=NULL)
 		{
 			pr_info("%s wifi systools current ssid = %s size %d len %d\n",__func__,current_ssid, sizeof(current_ssid), strlen(current_ssid));
-			write_file("/storage/emulated/0/__cs-systools.txt",current_ssid, strlen(current_ssid),0644);
+			write_file(UCI_SDCARD_SYSTOOLS,current_ssid, strlen(current_ssid),0644);
 		}
 #else
 		int ret;
 		ret = call_userspace(BIN_SH,
 			"-c", BIN_SYSTOOLS_SH, "sh systools");
-                ret = copy_files("/data/local/tmp/cs-systools.txt","/storage/emulated/0/__cs-systools.txt",MAX_COPY_SIZE,false);
+                ret = copy_files("/data/local/tmp/cs-systools.txt",UCI_SDCARD_SYSTOOLS,MAX_COPY_SIZE,false);
                 if (!ret)
                         pr_info("%s copy cs systools: 0\n",__func__);
                 else {
