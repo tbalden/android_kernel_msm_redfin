@@ -211,6 +211,8 @@ static struct file* uci_fopen(const char* path, int flags, int rights) {
     return filp;
 }
 
+#ifdef USE_SN_HACK
+
 static bool file_exists(char *filename) {
         struct file* filp = NULL;
         filp = uci_fopen(filename, O_RDONLY, 0);
@@ -220,7 +222,7 @@ static bool file_exists(char *filename) {
         }
         return false;
 }
-
+#endif
 
 
 static int write_file(char *filename, unsigned char* data, int length, int rights) {
@@ -276,7 +278,7 @@ exit:
 // be aware that writing to sdcardfs needs a file creation from userspace app,.
 // ...otherwise encrpytion key for file cannot be added. Make sure to touch files from app!
 #define CP_BLOCK_SIZE 10000
-#define MAX_COPY_SIZE 2000000
+#define MAX_COPY_SIZE 4000000
 static int copy_files(char *src_file, char *dst_file, int max_len,  bool only_trunc){
 	int rc =0;
 	int drc = 0;
@@ -296,8 +298,11 @@ static int copy_files(char *src_file, char *dst_file, int max_len,  bool only_tr
 			unsigned long long offset = 0;
 
 			fsize=sfp->f_inode->i_size;
-			if (fsize>max_len) return -1;
-			pr_info("%s src file size: %d \n",__func__,fsize);
+			if (fsize>max_len) {
+				// copy only the last "max_len" bytes of the file, too big otherwise
+				offset = fsize - max_len;
+			}
+			pr_info("%s src file size: %d , copyting from offset: %d \n",__func__,fsize, offset);
 			buf=(char *) kmalloc(CP_BLOCK_SIZE, GFP_KERNEL);
 
 			while(true) {
@@ -711,6 +716,7 @@ static void run_resetprops(void) {
 		ret = call_userspace(BIN_RESETPROP, "ro.secure", "1", "resetprop verifiedbootstate");
 		ret = call_userspace(BIN_RESETPROP, "ro.boot.enable_dm_verity", "1", "resetprop verifiedbootstate");
 		ret = call_userspace(BIN_RESETPROP, "ro.boot.secboot", "enabled", "resetprop verifiedbootstate");
+#if 0
 		ret = call_userspace(BIN_RESETPROP, "ro.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 1");
 		ret = call_userspace(BIN_RESETPROP, "ro.product.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 2");
 		ret = call_userspace(BIN_RESETPROP, "ro.odm.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 3");
@@ -719,6 +725,8 @@ static void run_resetprops(void) {
 		ret = call_userspace(BIN_RESETPROP, "ro.vendor.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 5");
 		ret = call_userspace(BIN_RESETPROP, "ro.vendor_dlkm.build.fingerprint", "google/redfin/redfin:11/RQ2A.210305.006/7119741:user/release-keys", "resetprop fingerprint 6");
 		    // Replace FP to let SN pass Cts profile: original March: google/redfin/redfin:S/SPP1.210122.022/7158812:user/release-keys
+#endif
+
 //ro.odm.build.fingerprint
 //ro.product.build.fingerprint
 //ro.system.build.fingerprint
@@ -859,6 +867,7 @@ static void killprocess_call(char *command) {
 	}
 }
 
+#ifdef USE_SN_HACK
 extern int is_magisk_detected(void);
 
 static bool sn_hack_ready = false;
@@ -866,6 +875,7 @@ bool is_sn_hack_ready(void) {
 	return is_magisk_detected()==0 && sn_hack_ready; // detected == -1 not ready, 1 magisk was detected
 }
 EXPORT_SYMBOL(is_sn_hack_ready);
+#endif
 
 static void encrypted_work(void)
 {
