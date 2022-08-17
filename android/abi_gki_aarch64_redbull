@@ -234,6 +234,7 @@
   dma_fence_release
   dma_fence_signal
   dma_fence_signal_locked
+  dma_fence_wait_timeout
   __dma_flush_area
   __dma_inv_area
   dmam_alloc_coherent
@@ -491,6 +492,7 @@
   media_device_unregister
   media_entity_pads_init
   memchr
+  memchr_inv
   memcmp
   memcpy
   __memcpy_fromio
@@ -924,6 +926,7 @@
   sysfs_create_group
   sysfs_create_groups
   sysfs_create_link
+  sysfs_emit
   sysfs_notify
   sysfs_remove_bin_file
   sysfs_remove_file_ns
@@ -1155,6 +1158,10 @@
   of_clk_get_from_provider
   __release_region
   __request_region
+
+# required by cdsprm.ko
+  dev_pm_qos_add_request
+  dev_pm_qos_update_request
 
 # required by citadel-spi.ko
   nonseekable_open
@@ -1430,7 +1437,6 @@
   match_int
   match_strdup
   match_token
-  memchr_inv
   noop_llseek
   notify_change
   override_creds
@@ -1446,7 +1452,6 @@
   simple_statfs
   strndup_user
   sync_filesystem
-  sysfs_emit
   touch_atime
   truncate_inode_pages
   unlock_new_inode
@@ -1584,7 +1589,9 @@
   dev_pm_opp_unregister_notifier
   __dma_clean_area
   dma_fence_add_callback
+  dma_fence_array_create
   dma_fence_array_ops
+  dma_fence_free
   dma_fence_remove_callback
   getboottime64
   get_random_u32
@@ -1595,6 +1602,7 @@
   idr_for_each
   idr_replace
   init_uts_ns
+  irq_work_queue
   iterate_fd
   kern_addr_valid
   kernfs_create_link
@@ -1637,7 +1645,6 @@
   devm_clk_bulk_get
   devm_of_pwm_get
   devm_pwm_put
-  dma_fence_wait_timeout
   dma_release_declared_memory
   do_wait_intr
   drm_add_edid_modes
@@ -1944,6 +1951,8 @@
 
 # required by msm_npu.ko
   kmem_cache_create_usercopy
+  register_reboot_notifier
+  unregister_reboot_notifier
 
 # required by msm_pm.ko
   arm_cpuidle_suspend
@@ -2763,11 +2772,10 @@
 
 # preserved by --additions-only
   crc32_le
+  crypto_register_scomp
+  crypto_unregister_scomp
   generic_file_mmap
   idr_alloc_u32
   simple_getattr
-  simple_strtoull
   soc_find_component
   vfs_statx
-  vm_map_ram
-  vm_unmap_ram

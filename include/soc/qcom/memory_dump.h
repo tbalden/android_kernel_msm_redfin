@@ -113,6 +113,17 @@ struct msm_dump_entry {
 	uint64_t addr;
 };
 
+struct dump_vaddr_entry {
+	uint32_t id;
+	void *dump_vaddr;
+	struct msm_dump_data *dump_data_vaddr;
+};
+
+struct msm_mem_dump_vaddr_tbl {
+	uint8_t num_node;
+	struct dump_vaddr_entry *entries;
+};
+
 #if IS_ENABLED(CONFIG_QCOM_MEMORY_DUMP_V2)
 extern int msm_dump_data_register(enum msm_dump_table_ids id,
 				  struct msm_dump_entry *entry);

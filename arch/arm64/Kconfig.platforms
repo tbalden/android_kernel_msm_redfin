@@ -182,6 +182,14 @@ config ARCH_BENGAL
 	  This enables support for the BENGAL chipset. If you do not
 	  wish to build a kernel that runs on this chipset, say 'N' here.
 
+config ARCH_KHAJE
+	bool "Enable Support for Qualcomm Technologies, Inc. KHAJE"
+	depends on ARCH_QCOM
+	select COMMON_CLK_QCOM
+	help
+	  This enables support for the KHAJE chipset. If you do not
+	  wish to build a kernel that runs on this chipset, say 'N' here.
+
 config ARCH_SCUBA
 	bool "Enable Support for Qualcomm Technologies, Inc. SCUBA"
 	depends on ARCH_QCOM
@@ -421,6 +429,11 @@ config ARCH_ZYNQMP
 
 config BOARD_BRAMBLE
 	bool "Google Bramble Family"
+	depends on ARCH_QCOM
+	select ARCH_LITO
+
+config BOARD_BARBET
+	bool "Google Barbet Family"
 	depends on ARCH_QCOM
 	select ARCH_LITO
 

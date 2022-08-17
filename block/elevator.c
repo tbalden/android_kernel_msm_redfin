@@ -560,15 +560,22 @@ void elv_bio_merged(struct request_queue *q, struct request *rq,
 #ifdef CONFIG_PM
 static void blk_pm_requeue_request(struct request *rq)
 {
-	if (rq->q->dev && !(rq->rq_flags & RQF_PM))
+	if (rq->q->dev && !(rq->rq_flags & RQF_PM) &&
+	    (rq->rq_flags & (RQF_PM_ADDED | RQF_FLUSH_SEQ))) {
+		rq->rq_flags &= ~RQF_PM_ADDED;
 		rq->q->nr_pending--;
+	}
 }
 
 static void blk_pm_add_request(struct request_queue *q, struct request *rq)
 {
-	if (q->dev && !(rq->rq_flags & RQF_PM) && q->nr_pending++ == 0 &&
-	    (q->rpm_status == RPM_SUSPENDED || q->rpm_status == RPM_SUSPENDING))
-		pm_request_resume(q->dev);
+	if (q->dev && !(rq->rq_flags & RQF_PM)) {
+		rq->rq_flags |= RQF_PM_ADDED;
+		if (q->nr_pending++ == 0 &&
+		    (q->rpm_status == RPM_SUSPENDED ||
+		     q->rpm_status == RPM_SUSPENDING))
+			pm_request_resume(q->dev);
+	}
 }
 #else
 static inline void blk_pm_requeue_request(struct request *rq) {}
@@ -870,8 +877,6 @@ void elv_unregister_queue(struct request_queue *q)
 		kobject_uevent(&e->kobj, KOBJ_REMOVE);
 		kobject_del(&e->kobj);
 		e->registered = 0;
-		/* Re-enable throttling in case elevator disabled it */
-		wbt_enable_default(q);
 	}
 }
 

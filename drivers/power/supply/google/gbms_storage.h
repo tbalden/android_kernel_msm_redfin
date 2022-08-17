@@ -39,6 +39,10 @@
 #define GBMS_DINF_LEN	32
 /* Battery cycle count bin length */
 #define GBMS_CNTB_LEN	16
+/* Battery swelling data length */
+#define GBMS_STRD_LEN	12
+/* Battery consistent soc length */
+#define GBMS_RSOC_LEN	2
 
 /**
  * Tags are u32 constants: hardcoding as hex since characters constants of more
@@ -59,6 +63,8 @@ enum gbms_tags {
 	GBMS_TAG_BGPN = 0x4247504e,
 	GBMS_TAG_CNTB = 0x434e5442,
 	GBMS_TAG_CELL = 0x43454c4c,
+	GBMS_TAG_STRD = 0x53545244,
+	GBMS_TAG_RSOC = 0x52534F43,
 };
 
 /**
@@ -145,6 +151,8 @@ extern struct gbms_storage_device *gbms_storage_create_device(const char *name,
 							      gbms_tag_t tag);
 extern void gbms_storage_cleanup_device(struct gbms_storage_device *gdev);
 
+extern bool gbms_temp_defend_dry_run(bool update, bool dry_run);
+
 #else
 
 int gbms_storage_register(struct gbms_storage_desc *desc, const char *name,
@@ -187,6 +195,10 @@ struct gbms_storage_device *gbms_storage_create_device(const char *name,
 	return NULL;
 }
 void gbms_storage_cleanup_device(struct gbms_storage_device *gdev)
+{
+	return;
+}
+bool gbms_temp_defend_dry_run(bool update, bool dry_run)
 {
 	return;
 }
