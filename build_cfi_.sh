@@ -5,19 +5,19 @@ echo "Clean Build Directory"
 echo 
 
 #make clean && make mrproper
-#rm -rf ./out_cfi
+#rm -rf ./out_cfi_
 
 echo
 echo "Issue Build Commands"
 echo
 
-mkdir -p out_cfi
+mkdir -p out_cfi_
 export ARCH=arm64
 export SUBARCH=arm64
 BASE_PATH=/home/android/pixel
 EXT_UTILS=$BASE_PATH/wahoo-kernel-tools/bin
-export CLANG_PATH_LIB=$BASE_PATH/clang-12.0.4/lib64
-export CLANG_PATH=$BASE_PATH/clang-12.0.4/bin
+export CLANG_PATH_LIB=$BASE_PATH/clang-12/lib64
+export CLANG_PATH=$BASE_PATH/clang-12/bin
 export PATH=${CLANG_PATH}:${EXT_UTILS}:${PATH}
 export DTC_EXT=$EXT_UTILS/dtc-aosp
 
@@ -43,11 +43,11 @@ echo
 echo "Set DEFCONFIG"
 echo 
 
-make O=out_cfi cleanslate_cfi_defconfig
+make O=out_cfi_ redbull-gki_defconfig
 
 
 echo
 echo "Build The Good Stuff"
 echo 
 
-make O=out_cfi -j23
+#make O=out_cfi_ -j23
