@@ -1132,5 +1132,5 @@ static void __exit sweep2sleep_exit(void)
 	return;
 }
 
-module_init(sweep2sleep_init);
+late_initcall(sweep2sleep_init);
 module_exit(sweep2sleep_exit);

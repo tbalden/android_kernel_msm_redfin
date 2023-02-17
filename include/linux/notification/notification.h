@@ -58,6 +58,8 @@ extern int smart_get_notification_level(int notif_type);
 extern bool ntf_is_screen_on(void);
 extern bool ntf_is_screen_early_on(void);
 extern bool ntf_is_screen_early_off(void);
+// query camera state
+extern bool ntf_is_camera_on(void);
 
 // charge callbacks to notify ntf - call it from battery/policy drivers
 extern void ntf_set_charge_state(bool on);
@@ -84,10 +86,6 @@ extern void ntf_kad_wake(void);
 extern void ntf_camera_started(void);
 extern void ntf_camera_stopped(void);
 extern void ntf_block_camera(bool val);
-
-// vibration tweaks
-extern ntf_vibration_set_in_pocket(int percentage, bool in_pocket);
-extern ntf_vibration_set_haptic(int percentage);
 
 // AOD
 extern void ntf_screen_aod_on(void);

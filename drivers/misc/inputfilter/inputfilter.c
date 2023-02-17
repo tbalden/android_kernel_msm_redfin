@@ -626,12 +626,12 @@ static enum alarmtimer_restart register_input_rtc_callback(struct alarm *al, kti
 	return ALARMTIMER_NORESTART;
 }
 
-extern int kcal_internal_override(int kcal_sat, int kcal_val, int kcal_cont, int r, int g, int b);
-//int kcal_internal_override(int kcal_sat, int kcal_val, int kcal_cont, int r, int g, int b) { return 1; }
-extern int kcal_internal_restore(bool force_kcal_update);
-//int kcal_internal_restore(void) { return 1; }
-extern void kcal_internal_backup(void);
-//void kcal_internal_backup(void) { }
+//extern int kcal_internal_override(int kcal_sat, int kcal_val, int kcal_cont, int r, int g, int b);
+int kcal_internal_override(int kcal_sat, int kcal_val, int kcal_cont, int r, int g, int b) { return 1; }
+//extern int kcal_internal_restore(bool force_kcal_update);
+int kcal_internal_restore(bool force_kcal_update) { return 1; }
+//extern void kcal_internal_backup(void);
+void kcal_internal_backup(void) { }
 
 static int kad_kcal_overlay_on = 0;
 static int kad_kcal_backed_up = 0;

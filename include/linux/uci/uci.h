@@ -96,6 +96,8 @@ extern const char* uci_get_sys_property_str(const char* property, const char* de
 extern void uci_add_sys_listener(void (*f)(void));
 /** add change listener to user cfg*/
 extern void uci_add_user_listener(void (*f)(void));
+/** add uci call handler to use in modules */
+extern void uci_add_call_handler(void (*f)(char* event, int num_params[], char* str_param));
 
 /** write operations */
 extern void write_uci_out(char *message);

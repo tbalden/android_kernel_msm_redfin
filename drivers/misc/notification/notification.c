@@ -473,16 +473,23 @@ void ntf_led_off(void) {
 	ntf_notify_listeners(NTF_EVENT_NOTIFICATION,0,"off");
 }
 
+static bool camera_on = false;
 void ntf_camera_started(void) {
 	ntf_notify_listeners(NTF_EVENT_CAMERA_ON,1,"on");
+	camera_on = true;
 }
 EXPORT_SYMBOL(ntf_camera_started);
 
 void ntf_camera_stopped(void) {
 	ntf_notify_listeners(NTF_EVENT_CAMERA_ON,0,"off");
+	camera_on = false;
 }
 EXPORT_SYMBOL(ntf_camera_stopped);
 
+bool ntf_is_camera_on(void) {
+	return camera_on;
+}
+EXPORT_SYMBOL(ntf_is_camera_on);
 
 static int last_notification_number = 0;
 static bool ntf_locked = true;
@@ -589,6 +596,6 @@ static void __exit ntf_exit(void)
 	pr_info("uci ntf - exit\n");
 }
 
-module_init(ntf_init);
+late_initcall(ntf_init);
 module_exit(ntf_exit);
 

@@ -23,11 +23,16 @@
 #include <linux/mm.h>
 //file operation-
 
+#ifdef CONFIG_UCI_NOTIFICATIONS_SCREEN_CALLBACKS
+#include <linux/notification/notification.h>
+#endif
+
 //#define UCI_LOG_DEBUG
 
 // comment these when callbacks implemented in drivers
-//#define EMPTY_CALLBACKS_TORCH
-//#define EMPTY_CALLBACKS_VIB
+#define EMPTY_CALLBACKS_TORCH
+#define EMPTY_CALLBACKS_VIB
+#define EMPTY_CALLBACKS_VIB_HAPTIC
 //#define EMPTY_CALLBACKS_KCAL
 #define EMPTY_CALLBACKS_LED_FRONT
 #define EMPTY_CALLBACKS_LED_BACK
@@ -784,9 +789,34 @@ static int fb_notifier_callback(
 }
 #endif
 
+// listeners
+
+static void (*uci_call_handlers[100])(char* event, int num_params[], char* str_param);
+static int uci_call_handler_counter = 0;
+
+static void uci_exec_call_handlers(char* event, int num_params[], char* str_param) {
+        int i =0;
+        for (;i<uci_call_handler_counter;i++) {
+                (*uci_call_handlers[i])(event,num_params,str_param);
+        }
+}
+
+void uci_add_call_handler(void (*f)(char* event, int num_params[], char* str_param)) {
+        if (uci_call_handler_counter<100) {
+                uci_call_handlers[uci_call_handler_counter++] = f;
+        } else {
+                // error;
+        }
+}
+EXPORT_SYMBOL(uci_add_call_handler);
+//
+
 #ifdef EMPTY_CALLBACKS_TORCH
 // torch
-void qpnp_torch_main(int led0, int led1) {}
+void qpnp_torch_main(int led0, int led1) {
+	int p[] = {led0,led1};
+	uci_exec_call_handlers("torch_main", p, NULL);
+}
 EXPORT_SYMBOL(qpnp_torch_main);
 #endif
 
@@ -806,14 +836,35 @@ EXPORT_SYMBOL(ntf_led_back_release_charge);
 
 #ifdef EMPTY_CALLBACKS_VIB
 // vib
-void set_vibrate_boosted(int num) {}
+void set_vibrate_boosted(int num) {
+	int p[] = {num};
+	uci_exec_call_handlers("vibrate_boosted", p, NULL);
+}
 EXPORT_SYMBOL(set_vibrate_boosted);
-void set_vibrate(int num) {}
+void set_vibrate(int num) {
+	int p[] = {num};
+	uci_exec_call_handlers("vibrate", p, NULL);
+}
 EXPORT_SYMBOL(set_vibrate);
-void set_vibrate_2(int num, int boost_level) {}
+void set_vibrate_2(int num, int boost_level) {
+	int p[] = {num,boost_level};
+	uci_exec_call_handlers("vibrate_2", p, NULL);
+}
 EXPORT_SYMBOL(set_vibrate_2);
-void uci_vibration_set_in_pocket(int percentage, bool in_pocket) {}
-EXPORT_SYMBOL(uci_vibration_set_in_pocket);
+
+void ntf_vibration_set_in_pocket(int percentage, bool in_pocket) {
+	int p[] = {percentage, in_pocket};
+	uci_exec_call_handlers("vibration_set_in_pocket", p, NULL);
+}
+EXPORT_SYMBOL(ntf_vibration_set_in_pocket);
+#endif
+
+#ifdef EMPTY_CALLBACKS_VIB_HAPTIC
+void ntf_vibration_set_haptic(int power) {
+	int p[] = {power};
+	uci_exec_call_handlers("vibration_set_haptic", p, NULL);
+}
+EXPORT_SYMBOL(ntf_vibration_set_haptic);
 #endif
 
 #ifdef EMPTY_CALLBACKS_KCAL
@@ -857,6 +908,6 @@ static void __exit uci_exit(void)
 	pr_info("uci - exit\n");
 }
 
-module_init(uci_init);
+late_initcall(uci_init);
 module_exit(uci_exit);
 

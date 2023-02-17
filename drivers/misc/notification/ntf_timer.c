@@ -44,6 +44,7 @@ static int smp_processor = -1;
 static int currently_torch_mode = 0;
 static int currently_blinking = 0;
 void ntf_set_cam_flashlight(bool on) {
+	pr_info("%d %d",__func__,on);
 	currently_torch_mode = on?1:0;
 	currently_blinking = 0;
 }
@@ -555,7 +556,7 @@ exit:
 
 
 void flash_blink(bool haptic) {
-	pr_info("%s [flashwake] flash_blink\n",__func__);
+	pr_info("%s [flashwake] flash_blink - haptics: %d, torch mode: %d \n",__func__,haptic?1:0,currently_torch_mode);
 	// is flash blink on?
 	if (!smart_get_flash_blink_on()) return;
 	// if not a haptic notificcation and haptic blink mode on, do not do blinking...
@@ -563,7 +564,7 @@ void flash_blink(bool haptic) {
 	if (haptic && get_flash_ignore_vibration()) return;
 	if (in_call) return;
 
-	// if torch i on, don't blink
+	// if torch is on, don't blink
 	if (currently_torch_mode) return;
 
 	if (!init_done) return;
