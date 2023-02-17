@@ -26,6 +26,10 @@
 #include <linux/log2.h>
 #include "leds.h"
 
+#ifdef CONFIG_UCI
+#include <linux/uci/uci.h>
+#endif
+
 #define	FLASH_LED_REG_PERPH_SUBTYPE(base)		(base + 0x05)
 
 #define	FLASH_LED_REG_LED_STATUS1(base)		(base + 0x08)
@@ -2421,6 +2425,15 @@ void qpnp_torch_main(int led0_lvl, int led1_lvl) {
 EXPORT_SYMBOL(qpnp_torch_main);
 #endif
 
+#ifdef CONFIG_UCI
+static void uci_call_handler(char* event, int num_param[], char* str_param) {
+        pr_info("%s call handler torch event %s %d %s\n",__func__,event,num_param[0],str_param);
+        if (!strcmp(event,"torch_main")) {
+                qpnp_torch_main(num_param[0],num_param[1]);
+        }
+}
+#endif
+
 static int qpnp_flash_led_parse_and_register_switch(struct qpnp_flash_led *led,
 						struct flash_switch_data *snode,
 						struct device_node *node)
@@ -3314,7 +3327,9 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 	}
 
 	dev_set_drvdata(&pdev->dev, led);
-
+#ifdef CONFIG_UCI
+	uci_add_call_handler(uci_call_handler);
+#endif
 	return 0;
 
 sysfs_fail:
