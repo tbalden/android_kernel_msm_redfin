@@ -47,6 +47,11 @@
 
 #include "drv2624.h"
 
+#ifdef CONFIG_UCI
+#include <linux/uci/uci.h>
+#include <linux/notification/notification.h>
+#endif
+
 static struct drv2624_data *drv2624_plat_data;
 
 static bool drv2624_is_volatile_reg(struct device *dev, unsigned int reg);
@@ -546,6 +551,32 @@ void ntf_vibration_set_haptic(int percentage) {
 }
 EXPORT_SYMBOL(ntf_vibration_set_haptic);
 
+
+static void uci_call_handler(char* event, int num_param[], char* str_param) {
+        pr_info("%s vibrate event %s %d %s\n",__func__,event,num_param[0],str_param);
+        if (g_drv2624) {
+
+            if (!strcmp(event,"vibrate_boosted")) {
+                set_vibrate_int(num_param[0],107,true,true);
+            } else
+            if (!strcmp(event,"vibrate")) {
+                set_vibrate_int(num_param[0],30,true,true);
+            } else
+            if (!strcmp(event,"vibrate_2")) {
+                pr_info("%s vibrate_2 %d %d %s\n",__func__,num_param[0],num_param[1],str_param);
+                set_vibrate_int(num_param[0],num_param[1],true,true);
+            };
+        }
+        if (!strcmp(event,"vibration_set_haptic")) {
+            haptic_percentage = num_param[0];
+        } else
+        if (!strcmp(event,"vibration_set_in_pocket")) {
+            booster_percentage = num_param[0];
+            booster_in_pocket = num_param[1];
+            pr_info("%s vibrate event %s perc: %d pocketed: %d\n",__func__,event,num_param[0],num_param[1]);
+        }
+
+}
 
 #endif
 
@@ -2041,6 +2072,7 @@ static int drv2624_i2c_probe(struct i2c_client *client,
 #ifdef CONFIG_UCI
         vib_func_wq = alloc_workqueue("vib_func_wq",
                 WQ_HIGHPRI | WQ_MEM_RECLAIM, 1);
+	uci_add_call_handler(uci_call_handler);
 #endif
 
 	return 0;
