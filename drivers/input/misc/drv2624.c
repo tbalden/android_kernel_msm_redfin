@@ -526,30 +526,30 @@ void set_vibrate_int(int num, int boost_level, bool start, bool stop) {
 }
 
 
-void set_vibrate_boosted(int num) {
-        set_vibrate_int(num, 107, true,true);
-}
-EXPORT_SYMBOL(set_vibrate_boosted);
-void set_vibrate(int num) {
-        set_vibrate_int(num, 30, true,true);
-}
-EXPORT_SYMBOL(set_vibrate);
-void set_vibrate_2(int num, int boost_level) {
-        set_vibrate_int(num, boost_level, true,true);
-}
-EXPORT_SYMBOL(set_vibrate_2);
+//static void set_vibrate_boosted(int num) {
+//        set_vibrate_int(num, 107, true,true);
+//}
+//EXPORT_SYMBOL(set_vibrate_boosted);
+//static void set_vibrate(int num) {
+//        set_vibrate_int(num, 30, true,true);
+//}
+//EXPORT_SYMBOL(set_vibrate);
+//static void set_vibrate_2(int num, int boost_level) {
+//        set_vibrate_int(num, boost_level, true,true);
+//}
+//EXPORT_SYMBOL(set_vibrate_2);
 
 
-void ntf_vibration_set_in_pocket(int percentage, bool in_pocket) {
-        booster_percentage = percentage;
-        booster_in_pocket = in_pocket;
-}
-EXPORT_SYMBOL(ntf_vibration_set_in_pocket);
+//static void ntf_vibration_set_in_pocket(int percentage, bool in_pocket) {
+//        booster_percentage = percentage;
+//        booster_in_pocket = in_pocket;
+//}
+//EXPORT_SYMBOL(ntf_vibration_set_in_pocket);
 
-void ntf_vibration_set_haptic(int percentage) {
-        haptic_percentage = percentage;
-}
-EXPORT_SYMBOL(ntf_vibration_set_haptic);
+//static void ntf_vibration_set_haptic(int percentage) {
+//        haptic_percentage = percentage;
+//}
+//EXPORT_SYMBOL(ntf_vibration_set_haptic);
 
 
 static void uci_call_handler(char* event, int num_param[], char* str_param) {
