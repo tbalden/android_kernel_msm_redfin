@@ -378,11 +378,40 @@ static int input_get_disposition(struct input_dev *dev,
 	return disposition;
 }
 
+#ifdef CONFIG_UCI
+#include <linux/inputfilter/sweep2sleep.h>
+#define STS_TOUCH_DEVICE "sec_touchscreen"
+static int last_abs_x = 0;
+#endif
+
 static void input_handle_event(struct input_dev *dev,
 			       unsigned int type, unsigned int code, int value)
 {
 	int disposition = input_get_disposition(dev, type, code, &value);
 
+#ifdef CONFIG_UCI
+// s2s related code
+	if (type == EV_ABS) {
+			if (code == ABS_MT_POSITION_X) {
+				if (strstr(dev->name, STS_TOUCH_DEVICE)) {
+					// store last abs X from s2s device. Here we rely on the fact...
+					// that ts drivers usually send abs X coordinates before Y.
+					// Also it's enough to override Y coordinate when determinded X/Y is
+					// in frozen area, X coordinate can remain unchanged (and we cannot change
+					// it either as it comes in two events 1. X then 2. Y.)
+					last_abs_x = value;
+				}
+			} else if (code == ABS_MT_POSITION_Y) {
+				if (strstr(dev->name, STS_TOUCH_DEVICE)) {
+					// check X,Y is in frozen area with s2s call..
+					int x2, y2;
+					bool frozen_coords = s2s_freeze_coords(&x2,&y2,last_abs_x,value);
+					// frozen, we take y from s2s and replace the value that came from input driver
+					if (frozen_coords) value = y2;
+				}
+			}
+	}
+#endif
 	if (disposition != INPUT_IGNORE_EVENT && type != EV_SYN)
 		add_input_randomness(type, code, value);
 
