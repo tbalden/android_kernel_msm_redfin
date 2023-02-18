@@ -48,6 +48,8 @@
   capable
   cdev_add
   cdev_del
+  cdev_device_add
+  cdev_device_del
   cdev_init
   __cfi_slowpath
   __check_object_size
@@ -137,7 +139,6 @@
   device_add
   device_create
   device_create_file
-  device_del
   device_destroy
   device_find_child
   device_for_each_child
@@ -443,7 +444,6 @@
   kstrtobool
   kstrtoint
   kstrtoll
-  kstrtos8
   kstrtou16
   kstrtou8
   kstrtouint
@@ -462,7 +462,6 @@
   kvfree
   kvmalloc_node
   kzfree
-  led_classdev_unregister
   __list_add_valid
   __list_del_entry_valid
   list_sort
@@ -592,7 +591,6 @@
   of_iomap
   of_irq_get
   of_irq_get_byname
-  of_led_classdev_register
   of_machine_is_compatible
   of_match_device
   of_match_node
@@ -781,6 +779,7 @@
   regulator_set_mode
   regulator_set_voltage
   regulator_sync_state
+  regulator_unregister_notifier
   release_firmware
   release_sock
   remap_pfn_range
@@ -1132,6 +1131,7 @@
   video_usercopy
 
 # required by cam_flash.ko
+  ntf_set_cam_flashlight
   thermal_zone_get_cdev_by_name
 
 # required by cam_ife_hw_mgr.ko
@@ -1335,6 +1335,9 @@
   timerqueue_del
   timerqueue_iterate_next
 
+# required by fpc1020_platform_tee.ko
+  register_fp_wake
+
 # required by fsa4480-i2c.ko
   of_find_i2c_device_by_node
 
@@ -1509,6 +1512,11 @@
   devres_free
   devres_release
 
+# required by leds-qpnp-flash-v2.ko
+  led_classdev_unregister
+  of_led_classdev_register
+  uci_add_call_handler
+
 # required by lpm-stats.ko
   kobject_get
   module_ktype
@@ -1603,7 +1611,6 @@
   idr_replace
   init_uts_ns
   irq_work_queue
-  iterate_fd
   kern_addr_valid
   kernfs_create_link
   ktime_get_real_seconds
@@ -1893,6 +1900,9 @@
   mipi_dsi_host_register
   mipi_dsi_host_unregister
   nsecs_to_jiffies
+  ntf_add_listener
+  ntf_screen_off
+  ntf_screen_on
   of_drm_find_bridge
   of_genpd_add_provider_simple
   of_graph_get_next_endpoint
@@ -1908,11 +1918,16 @@
   strreplace
   timespec64_to_jiffies
   tracing_off
+  uci_add_sys_listener
+  uci_add_user_listener
+  uci_get_sys_property_int_mm
+  uci_get_user_property_int_mm
   unmap_kernel_range
   unmap_mapping_range
   vm_get_page_prot
   vm_insert_mixed
   __wake_up_locked
+  write_uci_out
 
 # required by msm_ext_display.ko
   devm_extcon_dev_unregister
@@ -1997,6 +2012,7 @@
 # required by p9221_charger.ko
   crc8
   crc8_populate_msb
+  uci_set_active_panel
 
 # required by peripheral-loader.ko
   __iowrite32_copy
@@ -2166,8 +2182,8 @@
   iio_channel_release
 
 # required by qpnp_pdphy.ko
+  device_del
   device_get_named_child_node
-  devm_regulator_register_notifier
   hrtimer_init_sleeper
 
 # required by qrtr.ko
@@ -2244,7 +2260,6 @@
   netdev_rx_handler_unregister
   netif_schedule_queue
   ___pskb_trim
-  qdisc_reset
   rtnl_link_register
   rtnl_link_unregister
   rtnl_trylock
@@ -2429,6 +2444,7 @@
   filp_close
   filp_open
   input_mt_destroy_slots
+  s2s_freeze_coords
   strncat
   sysfs_remove_link
 
@@ -2601,7 +2617,6 @@
   extcon_get_edev_name
   extcon_get_property
   pm_runtime_barrier
-  regulator_unregister_notifier
   usb_gadget_vbus_connect
   usb_gadget_vbus_disconnect
   usb_register_atomic_notify
@@ -2609,10 +2624,6 @@
   usb_speed_string
   usb_unregister_atomic_notify
   usb_unregister_notify
-
-# required by usb_f_cdev.ko
-  cdev_device_add
-  cdev_device_del
 
 # required by usb_f_diag.ko
   refcount_dec_and_lock
@@ -2713,6 +2724,7 @@
   ieee80211_hdrlen
   iommu_iova_to_phys
   irq_set_affinity_hint
+  kstrtos8
   mac_pton
   netif_tx_stop_all_queues
   netlink_broadcast
@@ -2742,6 +2754,7 @@
   set_cpus_allowed_ptr
   skip_spaces
   strchrnul
+  uci_set_current_ssid
   unregister_netevent_notifier
   unregister_sysctl_table
   vprintk
@@ -2774,8 +2787,11 @@
   crc32_le
   crypto_register_scomp
   crypto_unregister_scomp
+  devm_regulator_register_notifier
   generic_file_mmap
   idr_alloc_u32
+  iterate_fd
+  qdisc_reset
   simple_getattr
   soc_find_component
   vfs_statx
