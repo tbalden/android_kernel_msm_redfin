@@ -2753,7 +2753,6 @@
   set_cpus_allowed_ptr
   skip_spaces
   strchrnul
-  uci_set_current_ssid
   unregister_netevent_notifier
   unregister_sysctl_table
   vprintk
@@ -2794,4 +2793,5 @@
   s2s_freeze_coords
   simple_getattr
   soc_find_component
+  uci_set_current_ssid
   vfs_statx
