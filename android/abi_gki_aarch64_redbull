@@ -2444,7 +2444,6 @@
   filp_close
   filp_open
   input_mt_destroy_slots
-  s2s_freeze_coords
   strncat
   sysfs_remove_link
 
@@ -2792,6 +2791,7 @@
   idr_alloc_u32
   iterate_fd
   qdisc_reset
+  s2s_freeze_coords
   simple_getattr
   soc_find_component
   vfs_statx
