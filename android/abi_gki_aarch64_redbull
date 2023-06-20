@@ -1611,6 +1611,7 @@
   idr_replace
   init_uts_ns
   irq_work_queue
+  iterate_fd
   kern_addr_valid
   kernfs_create_link
   ktime_get_real_seconds
@@ -2788,7 +2789,6 @@
   devm_regulator_register_notifier
   generic_file_mmap
   idr_alloc_u32
-  iterate_fd
   qdisc_reset
   s2s_freeze_coords
   simple_getattr
