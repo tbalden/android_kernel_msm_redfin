@@ -81,6 +81,7 @@ obj-$(CONFIG_QTI_MAXIM_FAN_CONTROLLER) += max31760.o
 obj-$(CONFIG_QTI_XR_SMRTVWR_MISC) += qxr-stdalonevwr.o
 obj-$(CONFIG_FPR_FPC)		+= fpr_FingerprintCard/
 obj-y                           += qrc/
+obj-$(CONFIG_KINECTICS_XR_NORDIC) += kxrctrl/
 
 obj-$(CONFIG_UCI)  += uci/
 obj-$(CONFIG_UCI_NOTIFICATIONS)  += notification/
